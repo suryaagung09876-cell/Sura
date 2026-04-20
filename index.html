@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>ZhennBlast • SPESIAL COLLAB</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="text-gray-800">
+
+<!-- VIDEO BACKGROUND -->
+<div class="video-background">
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <div class="video-overlay"></div>
+</div>
+
+<!-- DARK MODE TOGGLE -->
+<button id="darkModeToggle" class="fixed bottom-24 left-4 z-50 bg-white/20 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/30 text-white">
+  <i class="fas fa-moon"></i>
+</button>
+
+<!-- TOMBOL UNMUTE VIDEO -->
+<button id="unmuteVideoBtn" class="fixed bottom-24 right-4 z-50 bg-white/20 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/30 text-white">
+  <i class="fas fa-volume-mute"></i>
+</button>
+
+<!-- HALAMAN LOGIN / REGISTER -->
+<div id="authContainer" class="min-h-screen flex items-center justify-center p-4 relative z-10">
+  <div class="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 border border-white/30 animate-fade-in">
+    <div class="text-center mb-6">
+      <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white/50 shadow-lg animate-float">
+        <img id="authAvatar" src="" alt="Avatar" class="w-full h-full object-cover">
+      </div>
+      <h2 class="text-3xl font-bold text-white drop-shadow-lg mt-3">Zhenn X Fluxo</h2>
+      <p class="text-white/80 text-sm">SPESIAL</p>
+      <p class="text-white/70 text-xs mt-2 max-w-xs mx-auto">Akun Sering Keban/Ke Limit cepat? Disini Solusinya!!.</p>
+    </div>
+
+    <!-- TAB LOGIN / REGISTER -->
+    <div class="flex border-b border-white/30 mb-4">
+      <button id="tabLogin" class="flex-1 py-2 font-medium text-white border-b-2 border-white">Masuk</button>
+      <button id="tabRegister" class="flex-1 py-2 font-medium text-white/60">Daftar</button>
+    </div>
+
+    <!-- FORM LOGIN -->
+    <form id="loginForm" class="space-y-3">
+      <input type="text" id="loginId" placeholder="Email / Nomor Telepon" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
+      <input type="password" id="loginPw" placeholder="Password" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">Masuk</button>
+      <p class="text-white/60 text-xs text-center">Admin? Gunakan kode khusus</p>
+    </form>
+
+    <!-- FORM REGISTER -->
+    <form id="registerForm" class="space-y-3 hidden">
+      <input type="text" id="regName" placeholder="Nama Lengkap" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
+      <input type="text" id="regId" placeholder="Email / Nomor Telepon" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
+      <input type="password" id="regPw" placeholder="Password (min 6)" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">Daftar</button>
+    </form>
+
+    <!-- LINK ADMIN -->
+    <div class="mt-4 text-center">
+      <button id="showAdminLogin" class="text-white/80 text-sm underline">Login sebagai Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LOGIN ADMIN -->
+<div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('adminModal').classList.add('hidden')"></div>
+  <div class="relative bg-white/10 backdrop-blur-xl rounded-3xl p-6 w-full max-w-sm border border-white/30">
+    <h3 class="text-xl font-bold text-white mb-4">Admin Access</h3>
+    <input type="password" id="adminCodeInput" placeholder="Kode Admin" class="w-full p-3 bg-white/10 border border-white/30 rounded-xl text-white mb-3">
+    <button id="adminLoginBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-xl">Verifikasi</button>
+    <button class="w-full mt-2 text-white/70" onclick="document.getElementById('adminModal').classList.add('hidden')">Batal</button>
+  </div>
+</div>
+
+<!-- DASHBOARD UTAMA -->
+<div id="dashboardContainer" class="hidden relative z-10 min-h-screen">
+  <!-- DRAWER -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+  <div id="drawer" class="drawer">
+    <div class="p-4 border-b border-white/30 flex items-center gap-3">
+      <img id="drawerAvatar" src="" class="w-10 h-10 rounded-full">
+      <div>
+        <p class="font-semibold text-white" id="drawerName">User</p>
+        <p class="text-xs text-white/70" id="drawerEmail">-</p>
+      </div>
+      <button id="closeDrawer" class="ml-auto text-white"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="p-3">
+      <input type="text" id="drawerSearch" placeholder="Cari menu..." class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60">
+    </div>
+    <nav id="drawerNav" class="px-2 pb-4"></nav>
+    <div id="adminPanelDrawer" class="px-4 pb-4 hidden">
+      <div class="border-t border-white/30 pt-3">
+        <p class="text-white/80 text-sm mb-2 font-semibold">Admin Panel</p>
+        <button id="adminManageUsers" class="w-full text-left text-white/80 py-2"><i class="fas fa-users-cog mr-2"></i>Kelola Pengguna</button>
+      </div>
+    </div>
+    <div class="p-4 border-t border-white/30">
+      <button id="logoutBtn" class="text-red-300"><i class="fas fa-sign-out-alt mr-2"></i>Keluar</button>
+    </div>
+  </div>
+  <div id="swipeArea"></div>
+
+  <!-- HEADER -->
+  <header class="bg-white/10 backdrop-blur-md shadow-sm sticky top-0 z-30 p-4 flex items-center justify-between border-b border-white/30">
+    <div class="flex items-center gap-3">
+      <button id="menuToggle" class="text-white"><i class="fas fa-bars text-xl"></i></button>
+      <img id="headerAvatar" src="" class="w-8 h-8 rounded-full">
+      <span class="font-bold text-white">ZhennBlast</span>
+    </div>
+    <span id="userPremiumBadge" class="text-xs bg-white/20 text-white px-3 py-1 rounded-full">Free</span>
+  </header>
+
+  <!-- MUSIC PLAYER -->
+  <div class="bg-white/10 backdrop-blur-md border-b border-white/30 px-4 py-2 flex items-center justify-between">
+    <div class="flex items-center gap-2"><i class="fas fa-music text-white"></i><span id="nowPlaying" class="text-sm text-white truncate max-w-[150px]">lagu.mp3</span></div>
+    <div class="flex items-center gap-2">
+      <button id="playPauseBtn" class="w-8 h-8 bg-blue-500 text-white rounded-full"><i class="fas fa-play"></i></button>
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" class="w-16">
+    </div>
+  </div>
+  <audio id="audioPlayer" src="lagu.mp3" preload="auto"></audio>
+
+  <!-- MAIN CONTENT -->
+  <main class="p-4 pb-24">
+    <!-- BERANDA -->
+    <div id="page-beranda" class="page-view active space-y-5">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow flex items-center gap-3 border border-white/30">
+        <img id="homeAvatar" src="" class="w-12 h-12 rounded-full">
+        <div><p class="text-sm text-white/80">Halo,</p><p class="font-bold text-white" id="homeName">User</p></div>
+      </div>
+
+      <!-- FITUR BAN -->
+      <div id="fiturBan" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-ban text-red-300"></i><h3 class="font-bold text-white">Aju Banding Lepas Ban</h3><span class="bg-red-500/30 text-white text-xs px-2 py-0.5 rounded-full">Legit 100%</span></div>
+        <textarea id="banText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <button id="kocokBan" class="bg-indigo-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-random"></i> Kocok</button>
+          <button id="salinBan" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
+          <button id="kirimBan" class="bg-red-500/70 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fab fa-google"></i> Kirim Gmail</button>
+        </div>
+        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com</p>
+      </div>
+
+      <!-- FITUR LIMIT -->
+      <div id="fiturLimit" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-tachometer-alt text-orange-300"></i><h3 class="font-bold text-white">Aju Banding Lepas Limit</h3></div>
+        <textarea id="limitText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <button id="kocokLimit" class="bg-indigo-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-random"></i> Kocok</button>
+          <button id="salinLimit" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
+          <button id="kirimLimit" class="bg-orange-500/70 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fab fa-google"></i> Kirim Gmail</button>
+        </div>
+        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com</p>
+      </div>
+
+      <!-- BLAST -->
+      <div id="fiturBlast" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-broadcast-tower text-blue-300"></i><h3 class="font-bold text-white">Anti Limit Blast Web</h3></div>
+        <div class="space-y-2">
+          <input type="tel" id="blastPhoneInput" placeholder="Nomor Telepon Target" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60">
+          <div class="flex gap-2 items-end">
+            <div class="flex-1"><label class="text-xs text-white/80">Jumlah Blast</label><input type="number" id="blastInput" min="1" value="50" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white"></div>
+            <button id="startBlast" class="bg-blue-600/70 text-white px-4 py-2 rounded-lg">Mulai</button>
+          </div>
+        </div>
+        <div id="blastProgressContainer" class="mt-3 hidden">
+          <div class="h-2 bg-white/30 rounded-full"><div id="blastProgressBar" class="h-2 bg-blue-400 rounded-full" style="width:0%"></div></div>
+          <p id="blastProgressText" class="text-xs text-white/80 mt-1">0%</p>
+        </div>
+        <p class="text-xs text-white/70 mt-2"><i class="fas fa-info-circle"></i> Maksimal blast: <span id="maxBlast">50</span></p>
+      </div>
+    </div>
+
+    <!-- AKTIVITAS -->
+    <div id="page-aktivitas" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white mb-3"><i class="fas fa-history mr-2"></i>Riwayat Banding</h3>
+        <div id="aktivitasList" class="text-white/80"></div>
+      </div>
+    </div>
+
+    <!-- TUTORIAL -->
+    <div id="page-tutorial" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
+        <h3 class="font-bold text-white text-lg mb-3"><i class="fas fa-book-open mr-2"></i>Tutorial Aman Blast</h3>
+        <div class="space-y-3 text-sm text-white/90">
+          <p><strong>🔹 Cara Aman Blast:</strong> Gunakan proxy 1.1.1.1, tunggu 10 menit, blast tanpa matikan proxy.</p>
+          <p><strong>🔹 Pemanasan WhatsApp:</strong> Pakai proxy 5-12 jam, lalu 1 chat jeda 5 menit, 4 chat jeda, lanjutkan 499+ chat.</p>
+          <p><strong>🔹 Wajib Gabung Grup/Saluran:</strong> Minimal 2 grup WA & 2 saluran Telegram aktif.</p>
+          <p><strong>🔹 Pancing Nomor Sendiri:</strong> Chat biasa dengan nomor lain sebelum blast.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFIL -->
+    <div id="page-profil" class="page-view space-y-4">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white mb-3">Informasi Akun</h3>
+        <p class="text-white/90">Nama: <span id="profName"></span></p>
+        <p class="text-white/90">Email/HP: <span id="profEmail"></span></p>
+        <p class="text-white/90">Status: <span id="profStatus"></span></p>
+        <p class="text-white/90">Berakhir: <span id="profExpiry"></span></p>
+        <hr class="my-3 border-white/30">
+        <h4 class="font-semibold text-white">Ganti Password</h4>
+        <div class="space-y-2 mt-2">
+          <input type="password" id="oldPassInput" placeholder="Password saat ini" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
+          <input type="password" id="newPassInput" placeholder="Password baru" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
+          <button id="changePassBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg w-full">Simpan</button>
+          <button id="forgotPassBtn" class="text-white/70 text-sm underline w-full text-center">Lupa Password?</button>
+        </div>
+        <hr class="my-3 border-white/30">
+        <h4 class="font-semibold text-white">Aktivasi Premium</h4>
+        <div class="flex gap-2 mt-2">
+          <input type="text" id="kodePremiumInput" placeholder="Kode premium" class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
+          <button id="activatePremiumBtn" class="bg-green-600 text-white px-3 py-2 rounded-lg">Aktifkan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTAK -->
+    <div id="page-kontak" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow border border-white/30 text-center">
+        <i class="fab fa-telegram text-5xl text-blue-300 mb-4"></i>
+        <h3 class="font-bold text-white text-xl">Customer Service</h3>
+        <div class="space-y-3 mt-4">
+          <a href="https://t.me/ZhennBlast" target="_blank" class="block bg-blue-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@ZhennBlast</a>
+          <a href="https://t.me/KINKFLUXO" target="_blank" class="block bg-indigo-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@KINKFLUXO</a>
+          <a href="https://t.me/ZhennBlast01" target="_blank" class="block border border-white/30 text-white py-3 rounded-xl"><i class="fas fa-users mr-2"></i>Grup ZhennBlast01</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- HALAMAN ADMIN KELOLA USER -->
+    <div id="page-adminUsers" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white mb-3">Manajemen Pengguna</h3>
+        <div class="flex gap-2 mb-3">
+          <input type="text" id="adminSearchUser" placeholder="Cari..." class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
+          <button id="refreshAdminList" class="bg-blue-500/50 text-white px-3 py-2 rounded-lg"><i class="fas fa-sync-alt"></i></button>
+        </div>
+        <div id="adminUserList" class="space-y-2 max-h-96 overflow-auto"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM TOOLBAR -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/30 flex justify-around py-2 text-xs z-20">
+    <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i>Beranda</button>
+    <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i>Aktivitas</button>
+    <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i>Tutorial</button>
+    <button data-page="profil" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i>Profil</button>
+    <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i>Kontak</button>
+  </div>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
