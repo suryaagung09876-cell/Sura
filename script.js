@@ -1,6 +1,6 @@
-// script.js - FULL VERSION FOR ZHENNBLAST
+// script.js - FULL VERSION WITH FIXED PREMIUM UNLOCK
 
-// Konfigurasi Firebase (GANTI DENGAN PUNYA ANDA JIKA BERBEDA)
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCJGnr4C_tG6ItiLmITprjMUHA_7xP6rUE",
   authDomain: "zhennblast.firebaseapp.com",
@@ -28,8 +28,6 @@ let users = [];
 let selectedPaket = { durasi: '', harga: 0, hari: '' };
 let selectedMetode = '';
 let buktiTransferFile = null;
-
-// Blast interval
 let blastInterval = null;
 
 // ---------- AVATAR RANDOM ----------
@@ -132,7 +130,11 @@ async function loginUser(identifier, password) {
     if (snapshot.exists()) {
       const usersObj = snapshot.val();
       const user = Object.values(usersObj).find(u => u.identifier === identifier && u.password === password);
-      if (user) { currentUser = user; localStorage.setItem('zb_current', JSON.stringify(user)); return true; }
+      if (user) { 
+        currentUser = user; 
+        localStorage.setItem('zb_current', JSON.stringify(user)); 
+        return true; 
+      }
     }
     return false;
   } catch (error) { console.error(error); return false; }
@@ -178,7 +180,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', () => {
 function showDashboard() {
   authContainer.classList.add('hidden');
   dashboardContainer.classList.remove('hidden');
-  updateUI();
+  updateUI(); // Panggil updateUI untuk refresh status premium
   renderDrawerMenu();
   navigateTo('beranda');
   const phone = getTargetPhone();
@@ -210,12 +212,21 @@ function generateLimitText(phone) {
   return text;
 }
 
+// ========== FUNGSI PENTING: CEK PREMIUM ==========
 function isPremiumActive() {
   if (isAdminMode) return true;
-  return currentUser && currentUser.premiumExpiry && new Date(currentUser.premiumExpiry) > new Date();
+  if (!currentUser) return false;
+  if (!currentUser.premiumExpiry) return false;
+  const exp = new Date(currentUser.premiumExpiry);
+  const now = new Date();
+  return exp > now;
 }
 
+// ========== FUNGSI PENTING: UPDATE UI & BUKA KUNCI FITUR ==========
 function updateUI() {
+  console.log("🔵 updateUI dipanggil. isPremiumActive:", isPremiumActive());
+  
+  // Update tampilan nama/email
   if (isAdminMode) {
     document.getElementById('homeName').textContent = 'Administrator';
     document.getElementById('drawerName').textContent = 'Administrator';
@@ -223,42 +234,68 @@ function updateUI() {
     document.getElementById('userPremiumBadge').textContent = 'Admin';
     document.getElementById('adminPanelDrawer').classList.remove('hidden');
   } else if (currentUser) {
-    document.getElementById('homeName').textContent = currentUser.name;
-    document.getElementById('drawerName').textContent = currentUser.name;
-    document.getElementById('drawerEmail').textContent = currentUser.identifier;
-    document.getElementById('profName').textContent = currentUser.name;
-    document.getElementById('profEmail').textContent = currentUser.identifier;
+    document.getElementById('homeName').textContent = currentUser.name || 'User';
+    document.getElementById('drawerName').textContent = currentUser.name || 'User';
+    document.getElementById('drawerEmail').textContent = currentUser.identifier || '-';
+    document.getElementById('profName').textContent = currentUser.name || '-';
+    document.getElementById('profEmail').textContent = currentUser.identifier || '-';
+    
     const active = isPremiumActive();
     const badge = document.getElementById('userPremiumBadge');
     const profStatus = document.getElementById('profStatus');
+    
     if (active) {
-      badge.textContent = 'Premium Aktif'; badge.className = 'text-xs bg-green-500/30 text-white px-3 py-1 rounded-full';
+      badge.textContent = 'Premium Aktif';
+      badge.className = 'text-xs bg-green-500/30 text-white px-3 py-1 rounded-full';
       profStatus.textContent = 'Premium Aktif';
+      profStatus.className = 'bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs';
     } else {
-      badge.textContent = 'Free'; badge.className = 'text-xs bg-white/20 text-white px-3 py-1 rounded-full';
+      badge.textContent = 'Free';
+      badge.className = 'text-xs bg-white/20 text-white px-3 py-1 rounded-full';
       profStatus.textContent = 'Free';
+      profStatus.className = 'bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs';
     }
-    document.getElementById('profExpiry').textContent = currentUser.premiumExpiry ? new Date(currentUser.premiumExpiry).toLocaleDateString() : '-';
+    
+    document.getElementById('profExpiry').textContent = currentUser.premiumExpiry 
+      ? new Date(currentUser.premiumExpiry).toLocaleDateString('id-ID') 
+      : '-';
     document.getElementById('adminPanelDrawer').classList.add('hidden');
   }
 
-  document.querySelectorAll('.premium-lock').forEach(el => {
+  // ========== BUKA/TUTUP KUNCI FITUR ==========
+  const fiturLocks = document.querySelectorAll('.premium-lock');
+  console.log("🔵 Jumlah fitur premium-lock:", fiturLocks.length);
+  
+  fiturLocks.forEach((el, index) => {
     if (!isPremiumActive()) {
+      // KUNCI FITUR
       el.classList.add('locked');
       if (!el.querySelector('.lock-message')) {
-        const msg = document.createElement('div'); msg.className = 'lock-message';
+        const msg = document.createElement('div');
+        msg.className = 'lock-message';
         msg.innerHTML = '<i class="fas fa-lock mr-1"></i> Premium Only';
         el.appendChild(msg);
       }
-    } else { el.classList.remove('locked'); const msg = el.querySelector('.lock-message'); if(msg) msg.remove(); }
+    } else {
+      // BUKA FITUR
+      el.classList.remove('locked');
+      const msg = el.querySelector('.lock-message');
+      if (msg) msg.remove();
+    }
   });
 
+  // Update max blast
   let max = 50;
-  if (isPremiumActive() && !isAdminMode) {
-    const days = Math.ceil((new Date(currentUser.premiumExpiry) - new Date())/(1000*60*60*24));
-    if (days <= 3) max = 100; else if (days <=7) max = 500; else max = 1000;
+  if (isPremiumActive() && !isAdminMode && currentUser) {
+    const exp = new Date(currentUser.premiumExpiry);
+    const now = new Date();
+    const days = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+    if (days <= 3) max = 100;
+    else if (days <= 7) max = 500;
+    else max = 1000;
   }
-  document.getElementById('maxBlast').textContent = max;
+  const maxEl = document.getElementById('maxBlast');
+  if (maxEl) maxEl.textContent = max;
 }
 
 // ---------- NAVIGATION ----------
@@ -290,11 +327,14 @@ function renderDrawerMenu(filter='') {
 
 function navigateTo(pageId) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${pageId}`).classList.add('active');
+  const targetPage = document.getElementById(`page-${pageId}`);
+  if (targetPage) targetPage.classList.add('active');
+  
   document.querySelectorAll('.bottom-nav-item').forEach(b => {
     if (b.dataset.page === pageId) b.classList.add('active');
     else b.classList.remove('active');
   });
+  
   if (pageId === 'adminUsers') renderAdminUserList();
 }
 
@@ -311,52 +351,60 @@ let touchStart = 0;
 document.addEventListener('touchstart', e => touchStart = e.changedTouches[0].screenX, {passive: true});
 document.addEventListener('touchend', e => { if (e.changedTouches[0].screenX - touchStart > 70 && touchStart < 30) { drawer.classList.add('open'); overlay.classList.add('show'); } });
 
-// ---------- FITUR BANDING ----------
+// ---------- FITUR BANDING (DENGAN PENGECEKAN PREMIUM) ----------
+function checkPremiumOrAlert() {
+  if (!isPremiumActive()) {
+    alert('🔒 Fitur ini hanya untuk pengguna Premium. Silakan beli premium di menu Order.');
+    return false;
+  }
+  return true;
+}
+
 document.getElementById('generateFixMerah').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   document.getElementById('fixMerahText').value = generateFixMerah(getTargetPhone());
 });
 document.getElementById('salinFixMerah').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   navigator.clipboard.writeText(document.getElementById('fixMerahText').value).then(()=>alert('📋 Teks disalin'));
 });
 document.getElementById('kirimFixMerah').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   const body = document.getElementById('fixMerahText').value;
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com,support@support.whatsapp.com&su=Appeal%20Login%20Not%20Available&body=${encodeURIComponent(body)}`, '_blank');
 });
 
 document.getElementById('kocokBan').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   document.getElementById('banText').value = generateBanText(getTargetPhone());
 });
 document.getElementById('salinBan').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   navigator.clipboard.writeText(document.getElementById('banText').value).then(()=>alert('📋 Teks disalin'));
 });
 document.getElementById('kirimBan').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   const body = document.getElementById('banText').value;
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Lepas%20Ban&body=${encodeURIComponent(body)}`, '_blank');
 });
 
 document.getElementById('kocokLimit').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   document.getElementById('limitText').value = generateLimitText(getTargetPhone());
 });
 document.getElementById('salinLimit').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   navigator.clipboard.writeText(document.getElementById('limitText').value).then(()=>alert('📋 Teks disalin'));
 });
 document.getElementById('kirimLimit').addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   const body = document.getElementById('limitText').value;
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Lepas%20Limit&body=${encodeURIComponent(body)}`, '_blank');
 });
 
-// ---------- BLAST DENGAN EFEK ACAK ----------
+// ---------- BLAST ----------
 document.getElementById('startBlast').addEventListener('click', function() {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
+  if (!checkPremiumOrAlert()) return;
   const phone = document.getElementById('blastPhoneInput').value.trim() || getTargetPhone();
   if (!phone) return alert('📱 Masukkan nomor telepon!');
   const max = parseInt(document.getElementById('maxBlast').textContent);
@@ -408,34 +456,54 @@ document.getElementById('forgotPassBtn').addEventListener('click', () => {
   alert('📞 Hubungi admin via Telegram @ZhennBlast');
 });
 
-// ---------- AKTIVASI PREMIUM (KODE) ----------
+// ========== AKTIVASI PREMIUM (DIPERBAIKI) ==========
 document.getElementById('activatePremiumBtn').addEventListener('click', async () => {
   const code = document.getElementById('kodePremiumInput').value.trim().toUpperCase();
-  if (!currentUser) return;
+  if (!currentUser) return alert('❌ Anda belum login');
+  
   const userRef = ref(db, 'users/' + currentUser.id);
   const snapshot = await get(userRef);
   if (snapshot.exists()) {
     const user = snapshot.val();
     const codes = user.activationCodes || [];
     let days = 0;
+    
+    // Cek kode universal
     if (code === 'PREMIUM0102831') days = 3;
     else if (code === 'PREMIUM02738271') days = 7;
     else if (code === 'PREMIUM637182618') days = 30;
+    // Cek kode dari admin
     else if (codes.includes(code)) {
       if (code.startsWith('PREMIUM3')) days = 3;
       else if (code.startsWith('PREMIUM7')) days = 7;
       else if (code.startsWith('PREMIUM30')) days = 30;
     }
-    if (days === 0) return alert('❌ Kode tidak valid');
+    
+    if (days === 0) return alert('❌ Kode tidak valid atau sudah digunakan');
+    
     const exp = new Date();
     exp.setDate(exp.getDate() + days);
     const newCodes = codes.filter(c => c !== code);
-    await update(userRef, { premiumExpiry: exp.toISOString(), activationCodes: newCodes });
+    
+    // Update di Firebase
+    await update(userRef, { 
+      premiumExpiry: exp.toISOString(), 
+      activationCodes: newCodes 
+    });
+    
+    // Update currentUser
     currentUser.premiumExpiry = exp.toISOString();
+    currentUser.activationCodes = newCodes;
     localStorage.setItem('zb_current', JSON.stringify(currentUser));
+    
+    // ========== PENTING: PANGGIL updateUI UNTUK MEMBUKA FITUR ==========
     updateUI();
-    alert(`✅ Premium aktif hingga ${exp.toLocaleDateString()}`);
+    
+    alert(`✅ Premium aktif hingga ${exp.toLocaleDateString('id-ID')}`);
     document.getElementById('kodePremiumInput').value = '';
+    
+    // Kembali ke beranda
+    navigateTo('beranda');
   }
 });
 
@@ -493,7 +561,7 @@ document.getElementById('konfirmasiPaymentBtn').addEventListener('click', async 
   const telegramUrl = `https://t.me/ZhennBlast?text=${encodeURIComponent(message)}`;
   window.open(telegramUrl, '_blank');
   
-  alert('✅ Silakan kirim bukti transfer di chat Telegram yang terbuka.\n\nJika tidak terbuka otomatis, buka @ZhennBlast dan tempel pesan serta kirim gambar bukti transfer.');
+  alert('✅ Silakan kirim bukti transfer di chat Telegram yang terbuka.\n\nAdmin akan memproses pesanan Anda.');
   
   paymentModal.classList.add('hidden');
   selectedPaket = { durasi: '', harga: 0, hari: '' };
@@ -548,7 +616,7 @@ async function renderAdminUserList() {
   const search = document.getElementById('adminSearchUser')?.value.toLowerCase() || '';
   const filtered = users.filter(u => u.identifier && (u.identifier.toLowerCase().includes(search) || (u.name||'').toLowerCase().includes(search)));
   list.innerHTML = filtered.map(u => {
-    const exp = u.premiumExpiry ? new Date(u.premiumExpiry).toLocaleDateString() : 'Tidak';
+    const exp = u.premiumExpiry ? new Date(u.premiumExpiry).toLocaleDateString('id-ID') : 'Tidak';
     const codes = u.activationCodes ? u.activationCodes.join(', ') : '';
     return `
       <div class="border border-white/30 p-3 rounded-lg bg-white/5">
@@ -565,6 +633,7 @@ async function renderAdminUserList() {
       </div>
     `;
   }).join('');
+  
   document.querySelectorAll('.set-days').forEach(btn => {
     btn.addEventListener('click', () => addPremiumDays(btn.dataset.id, parseInt(btn.dataset.days)));
   });
@@ -597,10 +666,20 @@ onValue(ref(db, 'users'), (snapshot) => {
 });
 
 // ---------- INIT DEFAULT USER ----------
-if (users.length === 0) {
-  const defaultUser = { id: '1', name: 'Admin System', identifier: 'admin@system', password: 'admin', premiumExpiry: new Date(2099,0,1).toISOString(), activationCodes: [] };
-  set(ref(db, 'users/1'), defaultUser);
-}
+(async () => {
+  const snapshot = await get(ref(db, 'users'));
+  if (!snapshot.exists()) {
+    const defaultUser = { 
+      id: '1', 
+      name: 'Admin System', 
+      identifier: 'admin@system', 
+      password: 'admin', 
+      premiumExpiry: new Date(2099, 0, 1).toISOString(), 
+      activationCodes: [] 
+    };
+    await set(ref(db, 'users/1'), defaultUser);
+  }
+})();
 
 // ---------- START ----------
 authContainer.classList.remove('hidden');
