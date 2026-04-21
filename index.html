@@ -166,15 +166,15 @@
         <div id="fixMerahLock" class="relative">
           <textarea id="fixMerahText" rows="5" class="w-full p-3 bg-black/20 border border-white/30 rounded-lg text-sm text-white font-mono" readonly></textarea>
           <div id="fixMerahOverlay" class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20 hidden">
-            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+            <i class="fas fa-lock mr-2"></i> Premium Only
           </div>
         </div>
         <div class="flex flex-wrap gap-2 mt-3">
           <button id="generateFixMerah" class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg"><i class="fas fa-sync-alt mr-1"></i> Generate</button>
-          <button id="salinFixMerah" class="bg-gray-600/70 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-copy mr-1"></i> Salin Teks</button>
+          <button id="salinFixMerah" class="bg-gray-600/70 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-copy mr-1"></i> Salin</button>
           <button id="kirimFixMerah" class="bg-blue-600/80 text-white px-4 py-2 rounded-lg text-sm"><i class="fab fa-google mr-1"></i> Kirim Gmail</button>
         </div>
-        <p class="text-xs text-white/60 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com, support@support.whatsapp.com</p>
+        <p class="text-xs text-white/60 mt-2"><i class="far fa-envelope"></i> smb@support.whatsapp.com</p>
       </div>
 
       <!-- FITUR BAN -->
@@ -183,7 +183,7 @@
         <div id="banLock" class="relative">
           <textarea id="banText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
           <div id="banOverlay" class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20 hidden">
-            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+            <i class="fas fa-lock mr-2"></i> Premium Only
           </div>
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
@@ -191,7 +191,7 @@
           <button id="salinBan" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
           <button id="kirimBan" class="bg-red-500/70 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fab fa-google"></i> Kirim Gmail</button>
         </div>
-        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com</p>
+        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> smb@support.whatsapp.com</p>
       </div>
 
       <!-- FITUR LIMIT -->
@@ -200,7 +200,7 @@
         <div id="limitLock" class="relative">
           <textarea id="limitText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
           <div id="limitOverlay" class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20 hidden">
-            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+            <i class="fas fa-lock mr-2"></i> Premium Only
           </div>
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
@@ -208,7 +208,7 @@
           <button id="salinLimit" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
           <button id="kirimLimit" class="bg-orange-500/70 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fab fa-google"></i> Kirim Gmail</button>
         </div>
-        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com</p>
+        <p class="text-xs text-white/70 mt-2"><i class="far fa-envelope"></i> smb@support.whatsapp.com</p>
       </div>
 
       <!-- BLAST -->
@@ -346,28 +346,16 @@
             
             <div class="space-y-3">
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Dana">
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-wallet text-2xl text-blue-400"></i>
-                  <div><p class="text-white font-bold">Dana</p><p class="text-white/60 text-xs">085786073610</p></div>
-                </div>
+                <div class="flex items-center gap-3"><i class="fas fa-wallet text-2xl text-blue-400"></i><div><p class="text-white font-bold">Dana</p><p class="text-white/60 text-xs">085786073610</p></div></div>
               </button>
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Gopay">
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-mobile-alt text-2xl text-green-400"></i>
-                  <div><p class="text-white font-bold">Gopay</p><p class="text-white/60 text-xs">085786073610</p></div>
-                </div>
+                <div class="flex items-center gap-3"><i class="fas fa-mobile-alt text-2xl text-green-400"></i><div><p class="text-white font-bold">Gopay</p><p class="text-white/60 text-xs">085786073610</p></div></div>
               </button>
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="ShopeePay">
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-shopping-bag text-2xl text-orange-400"></i>
-                  <div><p class="text-white font-bold">ShopeePay</p><p class="text-white/60 text-xs">083823079884</p></div>
-                </div>
+                <div class="flex items-center gap-3"><i class="fas fa-shopping-bag text-2xl text-orange-400"></i><div><p class="text-white font-bold">ShopeePay</p><p class="text-white/60 text-xs">083823079884</p></div></div>
               </button>
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="QRIS">
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-qrcode text-2xl text-white"></i>
-                  <div><p class="text-white font-bold">QRIS</p><p class="text-white/60 text-xs">Scan QR di bawah</p></div>
-                </div>
+                <div class="flex items-center gap-3"><i class="fas fa-qrcode text-2xl text-white"></i><div><p class="text-white font-bold">QRIS</p><p class="text-white/60 text-xs">Scan QR di bawah</p></div></div>
               </button>
             </div>
             
@@ -404,13 +392,47 @@
         </div>
       </div>
     </div>
+
+    <!-- NONTON DRAKOR (FITUR BARU) -->
+    <div id="page-drakor" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30 relative">
+        <h3 class="font-bold text-white text-lg mb-3 font-heading"><i class="fas fa-play-circle mr-2 text-red-400"></i>Nonton Drakor</h3>
+        <div id="drakorLock" class="relative">
+          <div class="w-full h-[500px] rounded-xl overflow-hidden border border-white/30">
+            <iframe id="drakorIframe" src="https://drakor.id" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div id="drakorOverlay" class="absolute inset-0 flex items-center justify-center backdrop-blur-sm rounded-lg border border-white/20 hidden">
+            <div class="text-center text-white">
+              <i class="fas fa-crown text-4xl text-yellow-400 mb-2"></i>
+              <p class="font-bold text-lg">Premium Only</p>
+              <p class="text-sm text-white/70 mb-3">Buka kunci Nonton Drakor dengan berlangganan Premium</p>
+              <button id="unlockDrakorBtn" class="bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold px-4 py-2 rounded-full text-sm">Beli Premium</button>
+            </div>
+          </div>
+        </div>
+        <p class="text-white/60 text-xs mt-2"><i class="fas fa-info-circle"></i> Streaming drakor terbaru sub Indo.</p>
+      </div>
+    </div>
+
+    <!-- ADMIN KELOLA USER -->
+    <div id="page-adminUsers" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-database mr-2"></i>Manajemen Pengguna</h3>
+        <div class="flex gap-2 mb-3">
+          <input type="text" id="adminSearchUser" placeholder="Cari..." class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
+          <button id="refreshAdminList" class="bg-blue-500/50 text-white px-3 py-2 rounded-lg"><i class="fas fa-sync-alt"></i></button>
+        </div>
+        <div id="adminUserList" class="space-y-2 max-h-96 overflow-auto"></div>
+      </div>
+    </div>
   </main>
 
-  <!-- BOTTOM TOOLBAR -->
+  <!-- BOTTOM TOOLBAR (7 MENU) -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/30 flex justify-around py-2 text-xs z-20">
     <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i><span>Beranda</span></button>
     <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i><span>Aktivitas</span></button>
     <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i><span>Tutorial</span></button>
+    <button data-page="drakor" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-tv text-lg"></i><span>Drakor</span></button>
     <button data-page="akun" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i><span>Akun</span></button>
     <button data-page="order" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-shopping-cart text-lg"></i><span>Order</span></button>
     <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i><span>Kontak</span></button>
@@ -419,4 +441,4 @@
 
 <script type="module" src="script.js"></script>
 </body>
-  </html>
+</html>
