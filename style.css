@@ -21,6 +21,7 @@ body.dark .video-overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(5p
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } }
 
+.bottom-nav-item { transition: color 0.2s; }
 .bottom-nav-item.active { color: white; text-shadow: 0 0 8px rgba(255,255,255,0.8); }
 
 #volumeSlider { -webkit-appearance: none; appearance: none; height: 4px; background: rgba(255,255,255,0.3); border-radius: 5px; }
