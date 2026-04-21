@@ -47,3 +47,17 @@ body.dark .video-overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(5p
   font-family: "Font Awesome 6 Brands" !important;
   font-weight: 400 !important;
 }
+/* ... kode CSS sebelumnya tetap ... */
+
+/* Pastikan lock overlay muncul dengan benar */
+.premium-lock.locked .lock-message {
+  display: flex;
+}
+
+/* Perbaikan tampilan lock message */
+.lock-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
