@@ -12,7 +12,8 @@
   
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Font Awesome 6.5.2 (Stabil) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <style>
     * { font-family: 'Inter', sans-serif !important; }
@@ -274,24 +275,24 @@
     <!-- PROFIL & PAYMENT -->
     <div id="page-profil" class="page-view space-y-4">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
-        <h3 class="font-bold text-white mb-3 font-heading">Informasi Akun</h3>
-        <p class="text-white/90">Nama: <span id="profName"></span></p>
-        <p class="text-white/90">Email/HP: <span id="profEmail"></span></p>
-        <p class="text-white/90">Status: <span id="profStatus"></span></p>
-        <p class="text-white/90">Berakhir: <span id="profExpiry"></span></p>
+        <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-user-circle mr-2"></i>Informasi Akun</h3>
+        <p class="text-white/90"><i class="fas fa-user mr-2 w-5"></i>Nama: <span id="profName"></span></p>
+        <p class="text-white/90"><i class="fas fa-envelope mr-2 w-5"></i>Email/HP: <span id="profEmail"></span></p>
+        <p class="text-white/90"><i class="fas fa-tag mr-2 w-5"></i>Status: <span id="profStatus"></span></p>
+        <p class="text-white/90"><i class="fas fa-calendar-alt mr-2 w-5"></i>Berakhir: <span id="profExpiry"></span></p>
         <hr class="my-3 border-white/30">
-        <h4 class="font-semibold text-white font-heading">Ganti Password</h4>
+        <h4 class="font-semibold text-white font-heading"><i class="fas fa-key mr-2"></i>Ganti Password</h4>
         <div class="space-y-2 mt-2">
           <input type="password" id="oldPassInput" placeholder="Password saat ini" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <input type="password" id="newPassInput" placeholder="Password baru" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
-          <button id="changePassBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg w-full">Simpan</button>
-          <button id="forgotPassBtn" class="text-white/70 text-sm underline w-full text-center">Lupa Password?</button>
+          <button id="changePassBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg w-full"><i class="fas fa-save mr-2"></i>Simpan</button>
+          <button id="forgotPassBtn" class="text-white/70 text-sm underline w-full text-center"><i class="fas fa-question-circle mr-1"></i>Lupa Password?</button>
         </div>
         <hr class="my-3 border-white/30">
-        <h4 class="font-semibold text-white font-heading">Aktivasi Premium (Kode)</h4>
+        <h4 class="font-semibold text-white font-heading"><i class="fas fa-ticket-alt mr-2"></i>Aktivasi Premium (Kode)</h4>
         <div class="flex gap-2 mt-2">
           <input type="text" id="kodePremiumInput" placeholder="Kode premium" class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
-          <button id="activatePremiumBtn" class="bg-green-600 text-white px-3 py-2 rounded-lg">Aktifkan</button>
+          <button id="activatePremiumBtn" class="bg-green-600 text-white px-3 py-2 rounded-lg"><i class="fas fa-check mr-1"></i>Aktifkan</button>
         </div>
         
         <!-- PAYMENT SECTION -->
@@ -301,23 +302,23 @@
         <!-- Pilihan Paket -->
         <div class="grid grid-cols-2 gap-2 mb-3">
           <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="3" data-harga="20000" data-hari="3">
-            <p class="text-white font-bold">3 Hari</p>
+            <p class="text-white font-bold"><i class="fas fa-calendar-day mr-1"></i>3 Hari</p>
             <p class="text-yellow-300 text-sm">Rp 20.000</p>
           </button>
           <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="7" data-harga="45000" data-hari="7">
-            <p class="text-white font-bold">7 Hari</p>
+            <p class="text-white font-bold"><i class="fas fa-calendar-week mr-1"></i>7 Hari</p>
             <p class="text-yellow-300 text-sm">Rp 45.000</p>
-            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded">+Free 2 Hari</span>
+            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-gift mr-1"></i>+Free 2 Hari</span>
           </button>
           <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="30" data-harga="100000" data-hari="30">
-            <p class="text-white font-bold">30 Hari</p>
+            <p class="text-white font-bold"><i class="fas fa-calendar-alt mr-1"></i>30 Hari</p>
             <p class="text-yellow-300 text-sm">Rp 100.000</p>
-            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded">+Free 2 Hari</span>
+            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-gift mr-1"></i>+Free 2 Hari</span>
           </button>
           <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="unlimited" data-harga="150000" data-hari="unlimited">
-            <p class="text-white font-bold">Unlimited</p>
+            <p class="text-white font-bold"><i class="fas fa-infinity mr-1"></i>Unlimited</p>
             <p class="text-yellow-300 text-sm">Rp 150.000</p>
-            <span class="bg-purple-500/50 text-white text-xs px-1.5 py-0.5 rounded">Admin Panel</span>
+            <span class="bg-purple-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-crown mr-1"></i>Admin Panel</span>
           </button>
         </div>
         
@@ -326,11 +327,11 @@
           <i class="fas fa-wallet mr-2"></i>Order Sekarang
         </button>
         
-        <!-- Modal Payment (Hidden by default) -->
+        <!-- Modal Payment -->
         <div id="paymentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
           <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('paymentModal').classList.add('hidden')"></div>
           <div class="relative bg-gray-900/90 backdrop-blur-xl rounded-3xl p-6 w-full max-w-md border border-white/30 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-bold text-white mb-4 font-heading">Pilih Metode Pembayaran</h3>
+            <h3 class="text-xl font-bold text-white mb-4 font-heading"><i class="fas fa-credit-card mr-2"></i>Pilih Metode Pembayaran</h3>
             <p class="text-white/80 text-sm mb-3">Paket: <span id="selectedPaket">-</span></p>
             <p class="text-white/80 text-sm mb-4">Total: <span id="selectedHarga" class="text-yellow-300 font-bold">-</span></p>
             
@@ -338,19 +339,19 @@
             <div class="space-y-3">
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Dana">
                 <div class="flex items-center gap-3">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Dana" class="w-8 h-8 rounded">
+                  <i class="fas fa-wallet text-2xl text-blue-400"></i>
                   <div><p class="text-white font-bold">Dana</p><p class="text-white/60 text-xs">085786073610</p></div>
                 </div>
               </button>
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Gopay">
                 <div class="flex items-center gap-3">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="Gopay" class="w-8 h-8 rounded">
+                  <i class="fas fa-mobile-alt text-2xl text-green-400"></i>
                   <div><p class="text-white font-bold">Gopay</p><p class="text-white/60 text-xs">085786073610</p></div>
                 </div>
               </button>
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="ShopeePay">
                 <div class="flex items-center gap-3">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="ShopeePay" class="w-8 h-8 rounded bg-white p-1">
+                  <i class="fas fa-shopping-bag text-2xl text-orange-400"></i>
                   <div><p class="text-white font-bold">ShopeePay</p><p class="text-white/60 text-xs">083823079884</p></div>
                 </div>
               </button>
@@ -364,13 +365,13 @@
             
             <!-- QRIS Image -->
             <div id="qrisContainer" class="mt-4 hidden">
-              <p class="text-white/80 text-sm mb-2">Scan QRIS:</p>
+              <p class="text-white/80 text-sm mb-2"><i class="fas fa-camera mr-1"></i>Scan QRIS:</p>
               <img src="1776742263251.jpg" alt="QRIS" class="w-full rounded-xl border border-white/30">
             </div>
             
             <!-- Upload Bukti -->
             <div class="mt-4">
-              <label class="block text-white/80 text-sm mb-2">Upload Bukti Transfer:</label>
+              <label class="block text-white/80 text-sm mb-2"><i class="fas fa-upload mr-1"></i>Upload Bukti Transfer:</label>
               <input type="file" id="buktiTransferInput" accept="image/*" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white file:bg-blue-600 file:text-white file:border-none file:px-4 file:py-2 file:rounded-lg">
             </div>
             
@@ -379,7 +380,7 @@
             <button id="konfirmasiPaymentBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl mt-4">
               <i class="fab fa-telegram mr-2"></i>Kirim ke Telegram
             </button>
-            <button class="w-full mt-2 text-white/70 text-sm" onclick="document.getElementById('paymentModal').classList.add('hidden')">Batal</button>
+            <button class="w-full mt-2 text-white/70 text-sm" onclick="document.getElementById('paymentModal').classList.add('hidden')"><i class="fas fa-times mr-1"></i>Batal</button>
           </div>
         </div>
       </div>
@@ -389,7 +390,7 @@
     <div id="page-kontak" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow border border-white/30 text-center">
         <i class="fab fa-telegram text-5xl text-blue-300 mb-4"></i>
-        <h3 class="font-bold text-white text-xl font-heading">Customer Service</h3>
+        <h3 class="font-bold text-white text-xl font-heading"><i class="fas fa-headset mr-2"></i>Customer Service</h3>
         <div class="space-y-3 mt-4">
           <a href="https://t.me/ZhennBlast" target="_blank" class="block bg-blue-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@ZhennBlast</a>
           <a href="https://t.me/KINKFLUXO" target="_blank" class="block bg-indigo-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@KINKFLUXO</a>
@@ -401,7 +402,7 @@
     <!-- ADMIN KELOLA USER -->
     <div id="page-adminUsers" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
-        <h3 class="font-bold text-white mb-3 font-heading">Manajemen Pengguna</h3>
+        <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-database mr-2"></i>Manajemen Pengguna</h3>
         <div class="flex gap-2 mb-3">
           <input type="text" id="adminSearchUser" placeholder="Cari..." class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <button id="refreshAdminList" class="bg-blue-500/50 text-white px-3 py-2 rounded-lg"><i class="fas fa-sync-alt"></i></button>
@@ -413,11 +414,11 @@
 
   <!-- BOTTOM TOOLBAR -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/30 flex justify-around py-2 text-xs z-20">
-    <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i>Beranda</button>
-    <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i>Aktivitas</button>
-    <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i>Tutorial</button>
-    <button data-page="profil" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i>Profil</button>
-    <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i>Kontak</button>
+    <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i><span>Beranda</span></button>
+    <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i><span>Aktivitas</span></button>
+    <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i><span>Tutorial</span></button>
+    <button data-page="profil" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i><span>Profil</span></button>
+    <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i><span>Kontak</span></button>
   </div>
 </div>
 
