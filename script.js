@@ -1,5 +1,6 @@
-// script.js - FULL VERSION WITH PAYMENT FEATURE
+// script.js - FULL VERSION FOR ZHENNBLAST
 
+// Konfigurasi Firebase (GANTI DENGAN PUNYA ANDA JIKA BERBEDA)
 const firebaseConfig = {
   apiKey: "AIzaSyCJGnr4C_tG6ItiLmITprjMUHA_7xP6rUE",
   authDomain: "zhennblast.firebaseapp.com",
@@ -10,6 +11,7 @@ const firebaseConfig = {
   appId: "1:844515346587:web:bec0878e5e3e5f2e75de3e"
 };
 
+// Import Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getDatabase, ref, set, get, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
@@ -26,6 +28,9 @@ let users = [];
 let selectedPaket = { durasi: '', harga: 0, hari: '' };
 let selectedMetode = '';
 let buktiTransferFile = null;
+
+// Blast interval
+let blastInterval = null;
 
 // ---------- AVATAR RANDOM ----------
 function getRandomAvatar(seed = null) {
@@ -261,7 +266,8 @@ const menuItems = [
   { id: 'beranda', icon: 'fa-home', label: 'Beranda' },
   { id: 'aktivitas', icon: 'fa-history', label: 'Aktivitas' },
   { id: 'tutorial', icon: 'fa-book-open', label: 'Tutorial' },
-  { id: 'profil', icon: 'fa-user-cog', label: 'Profil' },
+  { id: 'akun', icon: 'fa-user', label: 'Akun' },
+  { id: 'order', icon: 'fa-shopping-cart', label: 'Order' },
   { id: 'kontak', icon: 'fab fa-telegram', label: 'Kontak' }
 ];
 
@@ -349,7 +355,6 @@ document.getElementById('kirimLimit').addEventListener('click', () => {
 });
 
 // ---------- BLAST DENGAN EFEK ACAK ----------
-let blastInterval;
 document.getElementById('startBlast').addEventListener('click', function() {
   if (!isPremiumActive()) return alert('🔒 Premium only');
   const phone = document.getElementById('blastPhoneInput').value.trim() || getTargetPhone();
@@ -381,7 +386,7 @@ document.getElementById('startBlast').addEventListener('click', function() {
 });
 
 // ---------- TUTORIAL UNLOCK ----------
-document.getElementById('unlockTutorialBtn').addEventListener('click', () => navigateTo('profil'));
+document.getElementById('unlockTutorialBtn').addEventListener('click', () => navigateTo('order'));
 
 // ---------- GANTI PASSWORD ----------
 document.getElementById('changePassBtn').addEventListener('click', async () => {
@@ -441,7 +446,6 @@ const metodeBtns = document.querySelectorAll('.metode-btn');
 const qrisContainer = document.getElementById('qrisContainer');
 const buktiInput = document.getElementById('buktiTransferInput');
 
-// Pilih Paket
 paketBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     paketBtns.forEach(b => b.classList.remove('active'));
@@ -454,7 +458,6 @@ paketBtns.forEach(btn => {
   });
 });
 
-// Order Now
 document.getElementById('orderNowBtn').addEventListener('click', () => {
   if (!selectedPaket.durasi) return alert('❌ Pilih paket terlebih dahulu!');
   document.getElementById('selectedPaket').textContent = `${selectedPaket.hari} Hari ${selectedPaket.hari === 'unlimited' ? '(Admin Panel)' : ''}`;
@@ -462,7 +465,6 @@ document.getElementById('orderNowBtn').addEventListener('click', () => {
   paymentModal.classList.remove('hidden');
 });
 
-// Pilih Metode
 metodeBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     metodeBtns.forEach(b => b.classList.remove('active'));
@@ -476,12 +478,10 @@ metodeBtns.forEach(btn => {
   });
 });
 
-// Upload Bukti
 buktiInput.addEventListener('change', (e) => {
   buktiTransferFile = e.target.files[0];
 });
 
-// Konfirmasi & Kirim ke Telegram
 document.getElementById('konfirmasiPaymentBtn').addEventListener('click', async () => {
   if (!selectedMetode) return alert('❌ Pilih metode pembayaran!');
   if (!buktiTransferFile) return alert('❌ Upload bukti transfer!');
@@ -490,7 +490,6 @@ document.getElementById('konfirmasiPaymentBtn').addEventListener('click', async 
   const totalText = `Rp ${selectedPaket.harga.toLocaleString()}`;
   const message = `Saya sudah bayar Dengan keterangan yang dipilih ${paketText} dan bayar ${totalText}`;
   
-  // Buka Telegram dengan teks
   const telegramUrl = `https://t.me/ZhennBlast?text=${encodeURIComponent(message)}`;
   window.open(telegramUrl, '_blank');
   
