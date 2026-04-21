@@ -1,4 +1,4 @@
-// script.js - FULL VERSION WITH ALL FEATURES + UNLOCK WORKING
+// script.js - FULL VERSION WITH DRAKOR + ADMIN + BLAST 30 DETIK
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJGnr4C_tG6ItiLmITprjMUHA_7xP6rUE",
@@ -22,7 +22,6 @@ let currentUser = null;
 let isAdminMode = false;
 let users = [];
 
-// Payment state
 let selectedPaket = { durasi: '', harga: 0, hari: '' };
 let selectedMetode = '';
 let buktiTransferFile = null;
@@ -65,7 +64,6 @@ const authContainer = document.getElementById('authContainer');
 const dashboard = document.getElementById('dashboardContainer');
 const adminModal = document.getElementById('adminModal');
 
-// Tabs
 document.getElementById('tabLogin').addEventListener('click', () => {
   document.getElementById('loginForm').classList.remove('hidden');
   document.getElementById('registerForm').classList.add('hidden');
@@ -108,10 +106,10 @@ document.getElementById('showAdminLogin').addEventListener('click', () => adminM
 document.getElementById('adminLoginBtn').addEventListener('click', () => {
   if (document.getElementById('adminCodeInput').value === ADMIN_CODE) {
     isAdminMode = true;
-    currentUser = { role: 'admin', name: 'Admin' };
+    currentUser = { role: 'admin', name: 'Administrator' };
     adminModal.classList.add('hidden');
     showDashboard();
-  }
+  } else alert('Kode admin salah');
 });
 
 function showDashboard() {
@@ -120,10 +118,12 @@ function showDashboard() {
   updateUI();
   renderDrawerMenu();
   navigateTo('beranda');
-  const phone = getPhone();
-  document.getElementById('fixMerahText').value = fixMerahText(phone);
-  document.getElementById('banText').value = banText(phone);
-  document.getElementById('limitText').value = limitText(phone);
+  if (!isAdminMode) {
+    const phone = getPhone();
+    document.getElementById('fixMerahText').value = fixMerahText(phone);
+    document.getElementById('banText').value = banText(phone);
+    document.getElementById('limitText').value = limitText(phone);
+  }
 }
 
 function getPhone() { return document.getElementById('globalTargetPhone')?.value || '08123456789'; }
@@ -139,10 +139,22 @@ function isPremium() {
 function updateUI() {
   const premium = isPremium();
   const badge = document.getElementById('userPremiumBadge');
+  const adminDrawer = document.getElementById('adminPanelDrawer');
+  
+  if (isAdminMode) {
+    badge.textContent = 'Admin'; badge.className = 'text-xs bg-purple-500/30 text-white px-3 py-1 rounded-full';
+    if (adminDrawer) adminDrawer.classList.remove('hidden');
+    document.getElementById('homeName').textContent = 'Administrator';
+    document.getElementById('drawerName').textContent = 'Administrator';
+    return;
+  }
+  
+  if (adminDrawer) adminDrawer.classList.add('hidden');
+  
   if (premium) { badge.textContent = 'Premium Aktif'; badge.className = 'text-xs bg-green-500/30 text-white px-3 py-1 rounded-full'; }
   else { badge.textContent = 'Free'; badge.className = 'text-xs bg-white/20 text-white px-3 py-1 rounded-full'; }
   
-  if (!isAdminMode && currentUser) {
+  if (currentUser) {
     document.getElementById('homeName').textContent = currentUser.name;
     document.getElementById('drawerName').textContent = currentUser.name;
     document.getElementById('drawerEmail').textContent = currentUser.identifier;
@@ -152,8 +164,7 @@ function updateUI() {
     document.getElementById('profExpiry').textContent = currentUser.premiumExpiry ? new Date(currentUser.premiumExpiry).toLocaleDateString() : '-';
   }
   
-  // BUKA/TUTUP SEMUA OVERLAY
-  const overlays = ['fixMerahOverlay', 'banOverlay', 'limitOverlay', 'blastOverlay', 'tutorialOverlay'];
+  const overlays = ['fixMerahOverlay', 'banOverlay', 'limitOverlay', 'blastOverlay', 'tutorialOverlay', 'drakorOverlay'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -167,7 +178,8 @@ function updateUI() {
     const days = Math.ceil((new Date(currentUser.premiumExpiry) - new Date()) / (1000*60*60*24));
     if (days <= 3) max = 100; else if (days <= 7) max = 500; else max = 1000;
   }
-  document.getElementById('maxBlast').textContent = max;
+  const maxEl = document.getElementById('maxBlast');
+  if (maxEl) maxEl.textContent = max;
 }
 
 // Navigasi
@@ -175,6 +187,7 @@ const menuItems = [
   { id: 'beranda', icon: 'fa-home', label: 'Beranda' },
   { id: 'aktivitas', icon: 'fa-history', label: 'Aktivitas' },
   { id: 'tutorial', icon: 'fa-book-open', label: 'Tutorial' },
+  { id: 'drakor', icon: 'fa-tv', label: 'Drakor' },
   { id: 'akun', icon: 'fa-user', label: 'Akun' },
   { id: 'order', icon: 'fa-shopping-cart', label: 'Order' },
   { id: 'kontak', icon: 'fab fa-telegram', label: 'Kontak' }
@@ -194,9 +207,9 @@ function navigateTo(page) {
     b.classList.toggle('active', b.dataset.page === page);
     b.classList.toggle('text-white', b.dataset.page === page);
   });
+  if (page === 'adminUsers') renderAdminUserList();
 }
 
-// Drawer
 const drawer = document.getElementById('drawer');
 document.getElementById('menuToggle').addEventListener('click', () => { drawer.classList.add('open'); document.getElementById('drawerOverlay').classList.add('show'); });
 document.getElementById('closeDrawer').addEventListener('click', () => { drawer.classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('show'); });
@@ -204,80 +217,80 @@ document.getElementById('drawerOverlay').addEventListener('click', () => { drawe
 document.getElementById('drawerSearch').addEventListener('input', e => renderDrawerMenu(e.target.value));
 document.querySelectorAll('.bottom-nav-item').forEach(b => b.addEventListener('click', () => navigateTo(b.dataset.page)));
 
-// Swipe
 let touchStart = 0;
 document.addEventListener('touchstart', e => touchStart = e.changedTouches[0].screenX);
 document.addEventListener('touchend', e => { if (e.changedTouches[0].screenX - touchStart > 70 && touchStart < 30) { drawer.classList.add('open'); document.getElementById('drawerOverlay').classList.add('show'); } });
 
-// Check Premium
 function checkPremium() { if (!isPremium()) { alert('🔒 Premium Only'); return false; } return true; }
 
 // Fitur Fix Merah
-document.getElementById('generateFixMerah').addEventListener('click', () => { if (checkPremium()) document.getElementById('fixMerahText').value = fixMerahText(getPhone()); });
-document.getElementById('salinFixMerah').addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('fixMerahText').value).then(()=>alert('Disalin')); });
-document.getElementById('kirimFixMerah').addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com,support@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('fixMerahText').value)}`); });
+document.getElementById('generateFixMerah')?.addEventListener('click', () => { if (checkPremium()) document.getElementById('fixMerahText').value = fixMerahText(getPhone()); });
+document.getElementById('salinFixMerah')?.addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('fixMerahText').value).then(()=>alert('Disalin')); });
+document.getElementById('kirimFixMerah')?.addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com,support@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('fixMerahText').value)}`); });
 
 // Fitur Ban
-document.getElementById('kocokBan').addEventListener('click', () => { if (checkPremium()) document.getElementById('banText').value = banText(getPhone()); });
-document.getElementById('salinBan').addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('banText').value).then(()=>alert('Disalin')); });
-document.getElementById('kirimBan').addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('banText').value)}`); });
+document.getElementById('kocokBan')?.addEventListener('click', () => { if (checkPremium()) document.getElementById('banText').value = banText(getPhone()); });
+document.getElementById('salinBan')?.addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('banText').value).then(()=>alert('Disalin')); });
+document.getElementById('kirimBan')?.addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('banText').value)}`); });
 
 // Fitur Limit
-document.getElementById('kocokLimit').addEventListener('click', () => { if (checkPremium()) document.getElementById('limitText').value = limitText(getPhone()); });
-document.getElementById('salinLimit').addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('limitText').value).then(()=>alert('Disalin')); });
-document.getElementById('kirimLimit').addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('limitText').value)}`); });
+document.getElementById('kocokLimit')?.addEventListener('click', () => { if (checkPremium()) document.getElementById('limitText').value = limitText(getPhone()); });
+document.getElementById('salinLimit')?.addEventListener('click', () => { if (checkPremium()) navigator.clipboard.writeText(document.getElementById('limitText').value).then(()=>alert('Disalin')); });
+document.getElementById('kirimLimit')?.addEventListener('click', () => { if (checkPremium()) window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&body=${encodeURIComponent(document.getElementById('limitText').value)}`); });
 
-// Blast
-document.getElementById('startBlast').addEventListener('click', () => {
+// Blast 30 detik
+document.getElementById('startBlast')?.addEventListener('click', () => {
   if (!checkPremium()) return;
   const cont = document.getElementById('blastProgressContainer');
   const bar = document.getElementById('blastProgressBar');
   const text = document.getElementById('blastProgressText');
+  const phone = document.getElementById('blastPhoneInput')?.value || getPhone();
   cont.classList.remove('hidden');
   let p = 0;
+  const duration = 30000;
+  const step = 100 / (duration / 300);
   if (blastInterval) clearInterval(blastInterval);
   blastInterval = setInterval(() => {
-    p += 5;
+    p += step;
+    if (p >= 100) { p = 100; clearInterval(blastInterval); }
     bar.style.width = p + '%';
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-    let fake = ''; for(let i=0;i<30;i++) fake += chars[Math.floor(Math.random()*chars.length)];
-    text.textContent = `Encrypting: ${fake} ... ${p}%`;
-    if (p >= 100) { clearInterval(blastInterval); text.textContent = '✅ Blast selesai!'; }
-  }, 150);
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+    let fake = ''; for(let i=0;i<45;i++) fake += chars[Math.floor(Math.random()*chars.length)];
+    text.textContent = `[${phone}] Encrypting: ${fake} ... ${Math.floor(p)}%`;
+    if (p >= 100) text.textContent = `✅ Blast ke ${phone} selesai!`;
+  }, 300);
 });
 
-// Unlock Tutorial
-document.getElementById('unlockTutorialBtn').addEventListener('click', () => navigateTo('order'));
+// Unlock
+document.getElementById('unlockTutorialBtn')?.addEventListener('click', () => navigateTo('order'));
+document.getElementById('unlockDrakorBtn')?.addEventListener('click', () => navigateTo('order'));
 
 // Ganti Password
-document.getElementById('changePassBtn').addEventListener('click', async () => {
+document.getElementById('changePassBtn')?.addEventListener('click', async () => {
   const old = document.getElementById('oldPassInput').value;
   const newPw = document.getElementById('newPassInput').value;
   if (!old || !newPw) return alert('Isi semua');
-  if (isAdminMode) return;
+  if (isAdminMode) return alert('Admin tidak perlu');
   if (currentUser.password !== old) return alert('Password lama salah');
   await update(ref(db, 'users/' + currentUser.id), { password: newPw });
   currentUser.password = newPw;
   alert('Berhasil');
 });
-
-document.getElementById('forgotPassBtn').addEventListener('click', () => alert('Hubungi @ZhennBlast'));
+document.getElementById('forgotPassBtn')?.addEventListener('click', () => alert('Hubungi @ZhennBlast'));
 
 // Aktivasi Premium
-document.getElementById('activatePremiumBtn').addEventListener('click', async () => {
+document.getElementById('activatePremiumBtn')?.addEventListener('click', async () => {
   const code = document.getElementById('kodePremiumInput').value.toUpperCase();
   let days = 0;
   if (code === 'PREMIUM0102831') days = 3;
   else if (code === 'PREMIUM02738271') days = 7;
   else if (code === 'PREMIUM637182618') days = 30;
   else return alert('Kode tidak valid');
-  
   const exp = new Date(); exp.setDate(exp.getDate() + days);
   await update(ref(db, 'users/' + currentUser.id), { premiumExpiry: exp.toISOString() });
   currentUser.premiumExpiry = exp.toISOString();
   updateUI();
   alert(`Premium aktif hingga ${exp.toLocaleDateString()}`);
-  document.getElementById('kodePremiumInput').value = '';
   navigateTo('beranda');
 });
 
@@ -287,7 +300,7 @@ document.querySelectorAll('.paket-btn').forEach(b => b.addEventListener('click',
   this.classList.add('active');
   selectedPaket = { durasi: this.dataset.durasi, harga: this.dataset.harga, hari: this.dataset.hari };
 }));
-document.getElementById('orderNowBtn').addEventListener('click', () => {
+document.getElementById('orderNowBtn')?.addEventListener('click', () => {
   if (!selectedPaket.hari) return alert('Pilih paket!');
   document.getElementById('selectedPaket').textContent = `${selectedPaket.hari} Hari`;
   document.getElementById('selectedHarga').textContent = `Rp ${parseInt(selectedPaket.harga).toLocaleString()}`;
@@ -299,12 +312,49 @@ document.querySelectorAll('.metode-btn').forEach(b => b.addEventListener('click'
   selectedMetode = this.dataset.metode;
   document.getElementById('qrisContainer').classList.toggle('hidden', selectedMetode !== 'QRIS');
 }));
-document.getElementById('buktiTransferInput').addEventListener('change', e => buktiTransferFile = e.target.files[0]);
-document.getElementById('konfirmasiPaymentBtn').addEventListener('click', () => {
+document.getElementById('buktiTransferInput')?.addEventListener('change', e => buktiTransferFile = e.target.files[0]);
+document.getElementById('konfirmasiPaymentBtn')?.addEventListener('click', () => {
   if (!selectedMetode) return alert('Pilih metode!');
-  window.open(`https://t.me/ZhennBlast?text=Saya sudah bayar ${selectedPaket.hari} Hari sebesar Rp ${parseInt(selectedPaket.harga).toLocaleString()} via ${selectedMetode}`, '_blank');
+  window.open(`https://t.me/ZhennBlast?text=Saya sudah bayar ${selectedPaket.hari} Hari via ${selectedMetode}`, '_blank');
   document.getElementById('paymentModal').classList.add('hidden');
-  alert('Kirim bukti transfer di chat Telegram');
+  alert('Kirim bukti di chat Telegram');
+});
+
+// Admin Functions
+document.getElementById('adminManageUsers')?.addEventListener('click', () => navigateTo('adminUsers'));
+async function addPremiumDays(userId, days) {
+  await update(ref(db, 'users/' + userId), { premiumExpiry: new Date(Date.now() + days*86400000).toISOString() });
+  renderAdminUserList();
+}
+async function deleteUser(userId) { if (confirm('Yakin?')) { await remove(ref(db, 'users/' + userId)); renderAdminUserList(); } }
+async function generateCode(userId) {
+  const snap = await get(ref(db, 'users/' + userId));
+  if (snap.exists()) {
+    const user = snap.val();
+    const codes = user.activationCodes || [];
+    const prefix = 'PREMIUM' + ['3','7','30'][Math.floor(Math.random()*3)];
+    const newCode = prefix + Math.random().toString(36).substring(2,8).toUpperCase();
+    codes.push(newCode);
+    await update(ref(db, 'users/' + userId), { activationCodes: codes });
+    alert(`Kode: ${newCode}`);
+    renderAdminUserList();
+  }
+}
+async function renderAdminUserList() {
+  const list = document.getElementById('adminUserList');
+  if (!list) return;
+  const search = document.getElementById('adminSearchUser')?.value.toLowerCase() || '';
+  const filtered = users.filter(u => u.identifier && (u.identifier.toLowerCase().includes(search) || (u.name||'').toLowerCase().includes(search)));
+  list.innerHTML = filtered.map(u => `<div class="border border-white/30 p-3 rounded-lg"><p class="text-white">${u.name} (${u.identifier})</p><p class="text-white/70 text-xs">Premium: ${u.premiumExpiry?new Date(u.premiumExpiry).toLocaleDateString():'Tidak'}</p><div class="flex gap-2 mt-2"><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="3">+3</button><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="7">+7</button><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="30">+30</button><button data-id="${u.id}" class="gen-code bg-green-500/50 text-white px-2 py-1 rounded text-xs">Kode</button><button data-id="${u.id}" class="delete-user bg-red-500/50 text-white px-2 py-1 rounded text-xs">Hapus</button></div></div>`).join('');
+  document.querySelectorAll('.set-days').forEach(b => b.addEventListener('click', () => addPremiumDays(b.dataset.id, parseInt(b.dataset.days))));
+  document.querySelectorAll('.gen-code').forEach(b => b.addEventListener('click', () => generateCode(b.dataset.id)));
+  document.querySelectorAll('.delete-user').forEach(b => b.addEventListener('click', () => deleteUser(b.dataset.id)));
+}
+document.getElementById('refreshAdminList')?.addEventListener('click', renderAdminUserList);
+document.getElementById('adminSearchUser')?.addEventListener('input', renderAdminUserList);
+onValue(ref(db, 'users'), (snap) => {
+  users = snap.val() ? Object.values(snap.val()) : [];
+  if (isAdminMode && document.getElementById('page-adminUsers')?.classList.contains('active')) renderAdminUserList();
 });
 
 // Logout
