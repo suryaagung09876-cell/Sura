@@ -12,12 +12,19 @@
   
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome 6.5.2 (Stabil) -->
+  
+  <!-- Font Awesome 6.5.2 (Stabil) dengan fallback -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Fallback jika CDN pertama gagal -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
   
   <style>
     * { font-family: 'Inter', sans-serif !important; }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Poppins', sans-serif !important; }
+    /* Pastikan icon tidak terpotong */
+    i { font-style: normal; }
+    .fa, .fas, .far, .fab { font-family: "Font Awesome 6 Free"; }
+    .fab { font-family: "Font Awesome 6 Brands"; }
   </style>
 </head>
 <body class="text-gray-800">
@@ -272,8 +279,8 @@
       </div>
     </div>
 
-    <!-- PROFIL & PAYMENT -->
-    <div id="page-profil" class="page-view space-y-4">
+    <!-- AKUN (INFORMASI AKUN) -->
+    <div id="page-akun" class="page-view space-y-4">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
         <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-user-circle mr-2"></i>Informasi Akun</h3>
         <p class="text-white/90"><i class="fas fa-user mr-2 w-5"></i>Nama: <span id="profName"></span></p>
@@ -294,10 +301,13 @@
           <input type="text" id="kodePremiumInput" placeholder="Kode premium" class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <button id="activatePremiumBtn" class="bg-green-600 text-white px-3 py-2 rounded-lg"><i class="fas fa-check mr-1"></i>Aktifkan</button>
         </div>
-        
-        <!-- PAYMENT SECTION -->
-        <hr class="my-3 border-white/30">
-        <h4 class="font-semibold text-white font-heading mb-3"><i class="fas fa-shopping-cart mr-2"></i>Beli Premium</h4>
+      </div>
+    </div>
+
+    <!-- ORDER (PEMBELIAN PREMIUM) -->
+    <div id="page-order" class="page-view space-y-4">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-shopping-cart mr-2"></i>Beli Premium</h3>
         
         <!-- Pilihan Paket -->
         <div class="grid grid-cols-2 gap-2 mb-3">
@@ -335,7 +345,6 @@
             <p class="text-white/80 text-sm mb-3">Paket: <span id="selectedPaket">-</span></p>
             <p class="text-white/80 text-sm mb-4">Total: <span id="selectedHarga" class="text-yellow-300 font-bold">-</span></p>
             
-            <!-- Metode Pembayaran -->
             <div class="space-y-3">
               <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Dana">
                 <div class="flex items-center gap-3">
@@ -363,13 +372,11 @@
               </button>
             </div>
             
-            <!-- QRIS Image -->
             <div id="qrisContainer" class="mt-4 hidden">
               <p class="text-white/80 text-sm mb-2"><i class="fas fa-camera mr-1"></i>Scan QRIS:</p>
               <img src="1776742263251.jpg" alt="QRIS" class="w-full rounded-xl border border-white/30">
             </div>
             
-            <!-- Upload Bukti -->
             <div class="mt-4">
               <label class="block text-white/80 text-sm mb-2"><i class="fas fa-upload mr-1"></i>Upload Bukti Transfer:</label>
               <input type="file" id="buktiTransferInput" accept="image/*" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white file:bg-blue-600 file:text-white file:border-none file:px-4 file:py-2 file:rounded-lg">
@@ -412,12 +419,13 @@
     </div>
   </main>
 
-  <!-- BOTTOM TOOLBAR -->
+  <!-- BOTTOM TOOLBAR (6 MENU) -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/30 flex justify-around py-2 text-xs z-20">
     <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i><span>Beranda</span></button>
     <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i><span>Aktivitas</span></button>
     <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i><span>Tutorial</span></button>
-    <button data-page="profil" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i><span>Profil</span></button>
+    <button data-page="akun" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i><span>Akun</span></button>
+    <button data-page="order" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-shopping-cart text-lg"></i><span>Order</span></button>
     <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i><span>Kontak</span></button>
   </div>
 </div>
