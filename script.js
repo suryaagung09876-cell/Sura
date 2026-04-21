@@ -1,4 +1,4 @@
-// script.js - Firebase Realtime Database (FULL)
+// script.js - FULL VERSION WITH PAYMENT FEATURE
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJGnr4C_tG6ItiLmITprjMUHA_7xP6rUE",
@@ -21,6 +21,11 @@ const ADMIN_CODE = 'Admin131313';
 let currentUser = null;
 let isAdminMode = false;
 let users = [];
+
+// Payment state
+let selectedPaket = { durasi: '', harga: 0, hari: '' };
+let selectedMetode = '';
+let buktiTransferFile = null;
 
 // ---------- AVATAR RANDOM ----------
 function getRandomAvatar(seed = null) {
@@ -103,10 +108,7 @@ async function registerUser(name, identifier, password) {
     if (snapshot.exists()) {
       const usersObj = snapshot.val();
       const exists = Object.values(usersObj).some(u => u.identifier === identifier);
-      if (exists) {
-        alert('❌ Email/Telepon sudah terdaftar!');
-        return false;
-      }
+      if (exists) { alert('❌ Email/Telepon sudah terdaftar!'); return false; }
     }
     const newId = Date.now().toString();
     const newUser = { id: newId, name, identifier, password, premiumExpiry: null, activationCodes: [] };
@@ -115,11 +117,7 @@ async function registerUser(name, identifier, password) {
     localStorage.setItem('zb_current', JSON.stringify(newUser));
     alert('✅ Pendaftaran berhasil! Silakan login.');
     return true;
-  } catch (error) {
-    console.error(error);
-    alert('❌ Gagal: ' + error.message);
-    return false;
-  }
+  } catch (error) { console.error(error); alert('❌ Gagal: ' + error.message); return false; }
 }
 
 async function loginUser(identifier, password) {
@@ -129,17 +127,10 @@ async function loginUser(identifier, password) {
     if (snapshot.exists()) {
       const usersObj = snapshot.val();
       const user = Object.values(usersObj).find(u => u.identifier === identifier && u.password === password);
-      if (user) {
-        currentUser = user;
-        localStorage.setItem('zb_current', JSON.stringify(user));
-        return true;
-      }
+      if (user) { currentUser = user; localStorage.setItem('zb_current', JSON.stringify(user)); return true; }
     }
     return false;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
+  } catch (error) { console.error(error); return false; }
 }
 
 // ---------- FORM SUBMIT ----------
@@ -153,12 +144,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
   btn.textContent = 'Mendaftar...'; btn.disabled = true;
   const success = await registerUser(name, id, pw);
   btn.textContent = 'Daftar'; btn.disabled = false;
-  if (success) {
-    document.getElementById('regName').value = '';
-    document.getElementById('regId').value = '';
-    document.getElementById('regPw').value = '';
-    document.getElementById('tabLogin').click();
-  }
+  if (success) { document.getElementById('tabLogin').click(); }
 });
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -169,10 +155,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   btn.textContent = 'Memeriksa...'; btn.disabled = true;
   const success = await loginUser(id, pw);
   btn.textContent = 'Masuk'; btn.disabled = false;
-  if (success) {
-    isAdminMode = false;
-    showDashboard();
-  } else alert('❌ Login gagal!');
+  if (success) { isAdminMode = false; showDashboard(); }
+  else alert('❌ Login gagal!');
 });
 
 // ---------- ADMIN ----------
@@ -192,8 +176,33 @@ function showDashboard() {
   updateUI();
   renderDrawerMenu();
   navigateTo('beranda');
-  document.getElementById('banText').value = 'Klik Kocok untuk generate teks...';
-  document.getElementById('limitText').value = 'Klik Kocok untuk generate teks...';
+  const phone = getTargetPhone();
+  document.getElementById('fixMerahText').value = generateFixMerah(phone);
+  document.getElementById('banText').value = generateBanText(phone);
+  document.getElementById('limitText').value = generateLimitText(phone);
+}
+
+function getTargetPhone() {
+  return document.getElementById('globalTargetPhone')?.value.trim() || '08123456789';
+}
+
+function generateFixMerah(phone) {
+  const cleanPhone = phone.replace(/^0/, '');
+  return `Appeal – Login Not Available (New Account)\nDear WhatsApp Support,\n\nI would like to appeal my account: Nomor anda +62 ${cleanPhone}\n\nMy account shows "login not available at this time" (red warning) and cannot be used.\n\nThis is a newly registered account and I have not violated any policies. This may be an error or unintended issue.\n\nPlease review and restore my account.\n\nThank you.`;
+}
+
+function generateBanText(phone) {
+  let text = `Kepada Tim Support WhatsApp,\n\nDengan hormat,\nNama: ${currentUser?.name||'Pengguna'}\nNomor: ${phone}\n\n`;
+  for (let i = 1; i <= 30; i++) text += `Paragraf ${i}: Saya mohon banned akun dibuka. Saya tidak melanggar aturan. `;
+  text += `\nTerima kasih.`;
+  return text;
+}
+
+function generateLimitText(phone) {
+  let text = `Kepada Tim Support WhatsApp,\n\nDengan hormat,\nNama: ${currentUser?.name||'Pengguna'}\nNomor: ${phone}\n\n`;
+  for (let i = 1; i <= 30; i++) text += `Paragraf ${i}: Saya mohon limit akun dinaikkan untuk riset. Saya tidak melanggar aturan. `;
+  text += `\nTerima kasih.`;
+  return text;
 }
 
 function isPremiumActive() {
@@ -218,12 +227,10 @@ function updateUI() {
     const badge = document.getElementById('userPremiumBadge');
     const profStatus = document.getElementById('profStatus');
     if (active) {
-      badge.textContent = 'Premium Aktif';
-      badge.className = 'text-xs bg-green-500/30 text-white px-3 py-1 rounded-full';
+      badge.textContent = 'Premium Aktif'; badge.className = 'text-xs bg-green-500/30 text-white px-3 py-1 rounded-full';
       profStatus.textContent = 'Premium Aktif';
     } else {
-      badge.textContent = 'Free';
-      badge.className = 'text-xs bg-white/20 text-white px-3 py-1 rounded-full';
+      badge.textContent = 'Free'; badge.className = 'text-xs bg-white/20 text-white px-3 py-1 rounded-full';
       profStatus.textContent = 'Free';
     }
     document.getElementById('profExpiry').textContent = currentUser.premiumExpiry ? new Date(currentUser.premiumExpiry).toLocaleDateString() : '-';
@@ -234,27 +241,19 @@ function updateUI() {
     if (!isPremiumActive()) {
       el.classList.add('locked');
       if (!el.querySelector('.lock-message')) {
-        const msg = document.createElement('div');
-        msg.className = 'lock-message';
+        const msg = document.createElement('div'); msg.className = 'lock-message';
         msg.innerHTML = '<i class="fas fa-lock mr-1"></i> Premium Only';
         el.appendChild(msg);
       }
-    } else {
-      el.classList.remove('locked');
-      const msg = el.querySelector('.lock-message');
-      if (msg) msg.remove();
-    }
+    } else { el.classList.remove('locked'); const msg = el.querySelector('.lock-message'); if(msg) msg.remove(); }
   });
 
   let max = 50;
-  if (isPremiumActive() && !isAdminMode && currentUser) {
+  if (isPremiumActive() && !isAdminMode) {
     const days = Math.ceil((new Date(currentUser.premiumExpiry) - new Date())/(1000*60*60*24));
-    if (days <= 3) max = 100;
-    else if (days <=7) max = 500;
-    else max = 1000;
+    if (days <= 3) max = 100; else if (days <=7) max = 500; else max = 1000;
   }
-  const maxEl = document.getElementById('maxBlast');
-  if (maxEl) maxEl.textContent = max;
+  document.getElementById('maxBlast').textContent = max;
 }
 
 // ---------- NAVIGATION ----------
@@ -266,7 +265,7 @@ const menuItems = [
   { id: 'kontak', icon: 'fab fa-telegram', label: 'Kontak' }
 ];
 
-function renderDrawerMenu(filter = '') {
+function renderDrawerMenu(filter='') {
   const nav = document.getElementById('drawerNav');
   const filtered = menuItems.filter(m => m.label.toLowerCase().includes(filter.toLowerCase()));
   nav.innerHTML = filtered.map(m => `
@@ -296,27 +295,214 @@ function navigateTo(pageId) {
 // Drawer
 const drawer = document.getElementById('drawer');
 const overlay = document.getElementById('drawerOverlay');
-document.getElementById('menuToggle').addEventListener('click', () => {
-  drawer.classList.add('open'); overlay.classList.add('show');
-});
-document.getElementById('closeDrawer').addEventListener('click', () => {
-  drawer.classList.remove('open'); overlay.classList.remove('show');
-});
-overlay.addEventListener('click', () => {
-  drawer.classList.remove('open'); overlay.classList.remove('show');
-});
+document.getElementById('menuToggle').addEventListener('click', () => { drawer.classList.add('open'); overlay.classList.add('show'); });
+document.getElementById('closeDrawer').addEventListener('click', () => { drawer.classList.remove('open'); overlay.classList.remove('show'); });
+overlay.addEventListener('click', () => { drawer.classList.remove('open'); overlay.classList.remove('show'); });
 document.getElementById('drawerSearch').addEventListener('input', e => renderDrawerMenu(e.target.value));
-document.querySelectorAll('.bottom-nav-item').forEach(btn => {
-  btn.addEventListener('click', () => navigateTo(btn.dataset.page));
-});
+document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.page)));
 
-// Swipe
 let touchStart = 0;
 document.addEventListener('touchstart', e => touchStart = e.changedTouches[0].screenX, {passive: true});
-document.addEventListener('touchend', e => {
-  if (e.changedTouches[0].screenX - touchStart > 70 && touchStart < 30) {
-    drawer.classList.add('open'); overlay.classList.add('show');
+document.addEventListener('touchend', e => { if (e.changedTouches[0].screenX - touchStart > 70 && touchStart < 30) { drawer.classList.add('open'); overlay.classList.add('show'); } });
+
+// ---------- FITUR BANDING ----------
+document.getElementById('generateFixMerah').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  document.getElementById('fixMerahText').value = generateFixMerah(getTargetPhone());
+});
+document.getElementById('salinFixMerah').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  navigator.clipboard.writeText(document.getElementById('fixMerahText').value).then(()=>alert('📋 Teks disalin'));
+});
+document.getElementById('kirimFixMerah').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  const body = document.getElementById('fixMerahText').value;
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com,support@support.whatsapp.com&su=Appeal%20Login%20Not%20Available&body=${encodeURIComponent(body)}`, '_blank');
+});
+
+document.getElementById('kocokBan').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  document.getElementById('banText').value = generateBanText(getTargetPhone());
+});
+document.getElementById('salinBan').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  navigator.clipboard.writeText(document.getElementById('banText').value).then(()=>alert('📋 Teks disalin'));
+});
+document.getElementById('kirimBan').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  const body = document.getElementById('banText').value;
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Lepas%20Ban&body=${encodeURIComponent(body)}`, '_blank');
+});
+
+document.getElementById('kocokLimit').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  document.getElementById('limitText').value = generateLimitText(getTargetPhone());
+});
+document.getElementById('salinLimit').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  navigator.clipboard.writeText(document.getElementById('limitText').value).then(()=>alert('📋 Teks disalin'));
+});
+document.getElementById('kirimLimit').addEventListener('click', () => {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  const body = document.getElementById('limitText').value;
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Lepas%20Limit&body=${encodeURIComponent(body)}`, '_blank');
+});
+
+// ---------- BLAST DENGAN EFEK ACAK ----------
+let blastInterval;
+document.getElementById('startBlast').addEventListener('click', function() {
+  if (!isPremiumActive()) return alert('🔒 Premium only');
+  const phone = document.getElementById('blastPhoneInput').value.trim() || getTargetPhone();
+  if (!phone) return alert('📱 Masukkan nomor telepon!');
+  const max = parseInt(document.getElementById('maxBlast').textContent);
+  let val = parseInt(document.getElementById('blastInput').value);
+  if (val > max) val = max;
+  
+  const cont = document.getElementById('blastProgressContainer');
+  const bar = document.getElementById('blastProgressBar');
+  const text = document.getElementById('blastProgressText');
+  cont.classList.remove('hidden');
+  
+  let prog = 0;
+  if (blastInterval) clearInterval(blastInterval);
+  blastInterval = setInterval(() => {
+    prog += 2;
+    if (prog > 100) prog = 100;
+    bar.style.width = prog + '%';
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}|:"<>?';
+    let fake = '';
+    for (let i=0; i<40; i++) fake += chars[Math.floor(Math.random()*chars.length)];
+    text.textContent = `[${phone}] Encrypting: ${fake} ... ${prog}%`;
+    if (prog >= 100) {
+      clearInterval(blastInterval);
+      text.textContent = `✅ Blast ke ${phone} selesai! (${val} pesan)`;
+    }
+  }, 150);
+});
+
+// ---------- TUTORIAL UNLOCK ----------
+document.getElementById('unlockTutorialBtn').addEventListener('click', () => navigateTo('profil'));
+
+// ---------- GANTI PASSWORD ----------
+document.getElementById('changePassBtn').addEventListener('click', async () => {
+  const old = document.getElementById('oldPassInput').value;
+  const newPw = document.getElementById('newPassInput').value;
+  if (!old || !newPw) return alert('❌ Isi semua field');
+  if (isAdminMode) return alert('❌ Admin tidak perlu ganti password');
+  if (currentUser.password !== old) return alert('❌ Password lama salah');
+  const userRef = ref(db, 'users/' + currentUser.id);
+  await update(userRef, { password: newPw });
+  currentUser.password = newPw;
+  localStorage.setItem('zb_current', JSON.stringify(currentUser));
+  alert('✅ Password berhasil diubah');
+  document.getElementById('oldPassInput').value = '';
+  document.getElementById('newPassInput').value = '';
+});
+
+document.getElementById('forgotPassBtn').addEventListener('click', () => {
+  alert('📞 Hubungi admin via Telegram @ZhennBlast');
+});
+
+// ---------- AKTIVASI PREMIUM (KODE) ----------
+document.getElementById('activatePremiumBtn').addEventListener('click', async () => {
+  const code = document.getElementById('kodePremiumInput').value.trim().toUpperCase();
+  if (!currentUser) return;
+  const userRef = ref(db, 'users/' + currentUser.id);
+  const snapshot = await get(userRef);
+  if (snapshot.exists()) {
+    const user = snapshot.val();
+    const codes = user.activationCodes || [];
+    let days = 0;
+    if (code === 'PREMIUM0102831') days = 3;
+    else if (code === 'PREMIUM02738271') days = 7;
+    else if (code === 'PREMIUM637182618') days = 30;
+    else if (codes.includes(code)) {
+      if (code.startsWith('PREMIUM3')) days = 3;
+      else if (code.startsWith('PREMIUM7')) days = 7;
+      else if (code.startsWith('PREMIUM30')) days = 30;
+    }
+    if (days === 0) return alert('❌ Kode tidak valid');
+    const exp = new Date();
+    exp.setDate(exp.getDate() + days);
+    const newCodes = codes.filter(c => c !== code);
+    await update(userRef, { premiumExpiry: exp.toISOString(), activationCodes: newCodes });
+    currentUser.premiumExpiry = exp.toISOString();
+    localStorage.setItem('zb_current', JSON.stringify(currentUser));
+    updateUI();
+    alert(`✅ Premium aktif hingga ${exp.toLocaleDateString()}`);
+    document.getElementById('kodePremiumInput').value = '';
   }
+});
+
+// ---------- PAYMENT SYSTEM ----------
+const paymentModal = document.getElementById('paymentModal');
+const paketBtns = document.querySelectorAll('.paket-btn');
+const metodeBtns = document.querySelectorAll('.metode-btn');
+const qrisContainer = document.getElementById('qrisContainer');
+const buktiInput = document.getElementById('buktiTransferInput');
+
+// Pilih Paket
+paketBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    paketBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedPaket = {
+      durasi: btn.dataset.durasi,
+      harga: parseInt(btn.dataset.harga),
+      hari: btn.dataset.hari
+    };
+  });
+});
+
+// Order Now
+document.getElementById('orderNowBtn').addEventListener('click', () => {
+  if (!selectedPaket.durasi) return alert('❌ Pilih paket terlebih dahulu!');
+  document.getElementById('selectedPaket').textContent = `${selectedPaket.hari} Hari ${selectedPaket.hari === 'unlimited' ? '(Admin Panel)' : ''}`;
+  document.getElementById('selectedHarga').textContent = `Rp ${selectedPaket.harga.toLocaleString()}`;
+  paymentModal.classList.remove('hidden');
+});
+
+// Pilih Metode
+metodeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    metodeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedMetode = btn.dataset.metode;
+    if (selectedMetode === 'QRIS') {
+      qrisContainer.classList.remove('hidden');
+    } else {
+      qrisContainer.classList.add('hidden');
+    }
+  });
+});
+
+// Upload Bukti
+buktiInput.addEventListener('change', (e) => {
+  buktiTransferFile = e.target.files[0];
+});
+
+// Konfirmasi & Kirim ke Telegram
+document.getElementById('konfirmasiPaymentBtn').addEventListener('click', async () => {
+  if (!selectedMetode) return alert('❌ Pilih metode pembayaran!');
+  if (!buktiTransferFile) return alert('❌ Upload bukti transfer!');
+  
+  const paketText = `${selectedPaket.hari} Hari ${selectedPaket.hari === 'unlimited' ? '(Admin Panel)' : ''}`;
+  const totalText = `Rp ${selectedPaket.harga.toLocaleString()}`;
+  const message = `Saya sudah bayar Dengan keterangan yang dipilih ${paketText} dan bayar ${totalText}`;
+  
+  // Buka Telegram dengan teks
+  const telegramUrl = `https://t.me/ZhennBlast?text=${encodeURIComponent(message)}`;
+  window.open(telegramUrl, '_blank');
+  
+  alert('✅ Silakan kirim bukti transfer di chat Telegram yang terbuka.\n\nJika tidak terbuka otomatis, buka @ZhennBlast dan tempel pesan serta kirim gambar bukti transfer.');
+  
+  paymentModal.classList.add('hidden');
+  selectedPaket = { durasi: '', harga: 0, hari: '' };
+  selectedMetode = '';
+  buktiTransferFile = null;
+  paketBtns.forEach(b => b.classList.remove('active'));
+  metodeBtns.forEach(b => b.classList.remove('active'));
+  qrisContainer.classList.add('hidden');
 });
 
 // ---------- ADMIN FUNCTIONS ----------
@@ -394,7 +580,7 @@ async function renderAdminUserList() {
 document.getElementById('adminManageUsers').addEventListener('click', () => navigateTo('adminUsers'));
 document.getElementById('refreshAdminList')?.addEventListener('click', renderAdminUserList);
 
-// Logout
+// ---------- LOGOUT ----------
 document.getElementById('logoutBtn').addEventListener('click', () => {
   currentUser = null; isAdminMode = false;
   localStorage.removeItem('zb_current');
@@ -402,7 +588,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   authContainer.classList.remove('hidden');
 });
 
-// Realtime listener
+// ---------- REALTIME LISTENER ----------
 onValue(ref(db, 'users'), (snapshot) => {
   const data = snapshot.val();
   users = data ? Object.values(data) : [];
@@ -411,124 +597,12 @@ onValue(ref(db, 'users'), (snapshot) => {
   }
 });
 
-// Template banding
-function generateLongTemplate(type, phone = '08xxxxxxxxxx') {
-  let text = `Kepada Tim Support WhatsApp,\n\nNama: ${currentUser?.name||'Pengguna'}\nNomor: ${phone}\n\n`;
-  for (let i = 1; i <= 30; i++) {
-    text += `Paragraf ${i}: Saya mohon ${type==='ban'?'banned akun dibuka':'limit dinaikkan'}. `;
-  }
-  text += `\nTerima kasih.`;
-  return text;
+// ---------- INIT DEFAULT USER ----------
+if (users.length === 0) {
+  const defaultUser = { id: '1', name: 'Admin System', identifier: 'admin@system', password: 'admin', premiumExpiry: new Date(2099,0,1).toISOString(), activationCodes: [] };
+  set(ref(db, 'users/1'), defaultUser);
 }
 
-// Banding Ban
-document.getElementById('kocokBan')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  const phone = document.getElementById('blastPhoneInput')?.value.trim() || '08xxxxxxxxxx';
-  document.getElementById('banText').value = generateLongTemplate('ban', phone);
-});
-document.getElementById('salinBan')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  navigator.clipboard.writeText(document.getElementById('banText').value).then(()=>alert('📋 Teks disalin'));
-});
-document.getElementById('kirimBan')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  const body = document.getElementById('banText').value;
-  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Ban&body=${encodeURIComponent(body)}`, '_blank');
-});
-
-// Banding Limit
-document.getElementById('kocokLimit')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  const phone = document.getElementById('blastPhoneInput')?.value.trim() || '08xxxxxxxxxx';
-  document.getElementById('limitText').value = generateLongTemplate('limit', phone);
-});
-document.getElementById('salinLimit')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  navigator.clipboard.writeText(document.getElementById('limitText').value).then(()=>alert('📋 Teks disalin'));
-});
-document.getElementById('kirimLimit')?.addEventListener('click', () => {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  const body = document.getElementById('limitText').value;
-  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=smb@support.whatsapp.com&su=Banding%20Limit&body=${encodeURIComponent(body)}`, '_blank');
-});
-
-// Blast
-document.getElementById('startBlast')?.addEventListener('click', function() {
-  if (!isPremiumActive()) return alert('🔒 Premium only');
-  const phone = document.getElementById('blastPhoneInput')?.value.trim();
-  if (!phone) return alert('📱 Masukkan nomor telepon!');
-  const max = parseInt(document.getElementById('maxBlast')?.textContent || '50');
-  let val = parseInt(document.getElementById('blastInput')?.value || '50');
-  if (val > max) val = max;
-  const cont = document.getElementById('blastProgressContainer');
-  const bar = document.getElementById('blastProgressBar');
-  const text = document.getElementById('blastProgressText');
-  cont.classList.remove('hidden');
-  let prog = 0;
-  const interval = setInterval(() => {
-    prog += 5;
-    bar.style.width = prog + '%';
-    text.textContent = prog + '%';
-    if (prog >= 100) {
-      clearInterval(interval);
-      text.textContent = `✅ Blast ke ${phone} selesai!`;
-    }
-  }, 200);
-});
-
-// Ganti password
-document.getElementById('changePassBtn')?.addEventListener('click', async () => {
-  const old = document.getElementById('oldPassInput').value;
-  const newPw = document.getElementById('newPassInput').value;
-  if (!old || !newPw) return alert('❌ Isi semua field');
-  if (isAdminMode) return alert('❌ Admin tidak perlu ganti password');
-  if (currentUser.password !== old) return alert('❌ Password lama salah');
-  const userRef = ref(db, 'users/' + currentUser.id);
-  await update(userRef, { password: newPw });
-  currentUser.password = newPw;
-  localStorage.setItem('zb_current', JSON.stringify(currentUser));
-  alert('✅ Password berhasil diubah');
-  document.getElementById('oldPassInput').value = '';
-  document.getElementById('newPassInput').value = '';
-});
-
-document.getElementById('forgotPassBtn')?.addEventListener('click', () => {
-  alert('📞 Hubungi admin via Telegram @ZhennBlast');
-});
-
-// Aktivasi premium
-document.getElementById('activatePremiumBtn')?.addEventListener('click', async () => {
-  const code = document.getElementById('kodePremiumInput').value.trim().toUpperCase();
-  if (!currentUser) return;
-  const userRef = ref(db, 'users/' + currentUser.id);
-  const snapshot = await get(userRef);
-  if (snapshot.exists()) {
-    const user = snapshot.val();
-    const codes = user.activationCodes || [];
-    let days = 0;
-    if (code === 'PREMIUM0102831') days = 3;
-    else if (code === 'PREMIUM02738271') days = 7;
-    else if (code === 'PREMIUM637182618') days = 30;
-    else if (codes.includes(code)) {
-      if (code.startsWith('PREMIUM3')) days = 3;
-      else if (code.startsWith('PREMIUM7')) days = 7;
-      else if (code.startsWith('PREMIUM30')) days = 30;
-    }
-    if (days === 0) return alert('❌ Kode tidak valid');
-    const exp = new Date();
-    exp.setDate(exp.getDate() + days);
-    const newCodes = codes.filter(c => c !== code);
-    await update(userRef, { premiumExpiry: exp.toISOString(), activationCodes: newCodes });
-    currentUser.premiumExpiry = exp.toISOString();
-    localStorage.setItem('zb_current', JSON.stringify(currentUser));
-    updateUI();
-    alert(`✅ Premium aktif hingga ${exp.toLocaleDateString()}`);
-    document.getElementById('kodePremiumInput').value = '';
-  }
-});
-
-// Init
-console.log("🚀 Aplikasi siap");
+// ---------- START ----------
 authContainer.classList.remove('hidden');
 dashboardContainer.classList.add('hidden');
