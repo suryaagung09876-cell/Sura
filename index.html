@@ -3,10 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>ZhennBlast • SPESIAL COLLAB</title>
+  <title>ZhennBlast • Anti Banned WhatsApp</title>
+  
+  <!-- Font Modern -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    * { font-family: 'Inter', sans-serif !important; }
+    h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Poppins', sans-serif !important; }
+  </style>
 </head>
 <body class="text-gray-800">
 
@@ -23,7 +34,7 @@
   <i class="fas fa-moon"></i>
 </button>
 
-<!-- TOMBOL UNMUTE VIDEO -->
+<!-- UNMUTE VIDEO -->
 <button id="unmuteVideoBtn" class="fixed bottom-24 right-4 z-50 bg-white/20 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/30 text-white">
   <i class="fas fa-volume-mute"></i>
 </button>
@@ -35,18 +46,16 @@
       <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white/50 shadow-lg animate-float">
         <img id="authAvatar" src="" alt="Avatar" class="w-full h-full object-cover">
       </div>
-      <h2 class="text-3xl font-bold text-white drop-shadow-lg mt-3">Zhenn X Fluxo</h2>
-      <p class="text-white/80 text-sm">SPESIAL</p>
-      <p class="text-white/70 text-xs mt-2 max-w-xs mx-auto">Akun Sering Keban/Ke Limit cepat? Disini Solusinya!!.</p>
+      <h2 class="text-3xl font-bold text-white drop-shadow-lg mt-3 font-heading">ZhennBlast</h2>
+      <p class="text-white/80 text-sm">Kebal Akun • Anti Banned • Support WhatsApp</p>
+      <p class="text-white/70 text-xs mt-2 max-w-xs mx-auto">Mengantisipasi pembatasan, membuat akun Anda lebih kuat dan sulit ditembus sistem.</p>
     </div>
 
-    <!-- TAB LOGIN / REGISTER -->
     <div class="flex border-b border-white/30 mb-4">
       <button id="tabLogin" class="flex-1 py-2 font-medium text-white border-b-2 border-white">Masuk</button>
       <button id="tabRegister" class="flex-1 py-2 font-medium text-white/60">Daftar</button>
     </div>
 
-    <!-- FORM LOGIN -->
     <form id="loginForm" class="space-y-3">
       <input type="text" id="loginId" placeholder="Email / Nomor Telepon" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
       <input type="password" id="loginPw" placeholder="Password" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
@@ -54,7 +63,6 @@
       <p class="text-white/60 text-xs text-center">Admin? Gunakan kode khusus</p>
     </form>
 
-    <!-- FORM REGISTER -->
     <form id="registerForm" class="space-y-3 hidden">
       <input type="text" id="regName" placeholder="Nama Lengkap" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
       <input type="text" id="regId" placeholder="Email / Nomor Telepon" class="w-full p-3 bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70" required>
@@ -62,7 +70,6 @@
       <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">Daftar</button>
     </form>
 
-    <!-- LINK ADMIN -->
     <div class="mt-4 text-center">
       <button id="showAdminLogin" class="text-white/80 text-sm underline">Login sebagai Admin</button>
     </div>
@@ -114,7 +121,7 @@
     <div class="flex items-center gap-3">
       <button id="menuToggle" class="text-white"><i class="fas fa-bars text-xl"></i></button>
       <img id="headerAvatar" src="" class="w-8 h-8 rounded-full">
-      <span class="font-bold text-white">ZhennBlast</span>
+      <span class="font-bold text-white text-lg font-heading">ZhennBlast</span>
     </div>
     <span id="userPremiumBadge" class="text-xs bg-white/20 text-white px-3 py-1 rounded-full">Free</span>
   </header>
@@ -135,13 +142,46 @@
     <div id="page-beranda" class="page-view active space-y-5">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow flex items-center gap-3 border border-white/30">
         <img id="homeAvatar" src="" class="w-12 h-12 rounded-full">
-        <div><p class="text-sm text-white/80">Halo,</p><p class="font-bold text-white" id="homeName">User</p></div>
+        <div><p class="text-sm text-white/80">Halo,</p><p class="font-bold text-white text-lg font-heading" id="homeName">User</p></div>
+      </div>
+
+      <!-- NOMOR TARGET GLOBAL -->
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <label class="text-white text-sm block mb-1"><i class="fas fa-phone mr-2"></i>Nomor Target (untuk semua fitur)</label>
+        <input type="tel" id="globalTargetPhone" placeholder="Contoh: 08123456789" class="w-full p-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60">
+        <p class="text-white/60 text-xs mt-1">Nomor ini akan otomatis masuk ke teks banding.</p>
+      </div>
+
+      <!-- FITUR FIX MERAH -->
+      <div id="fiturFixMerah" class="bg-gradient-to-br from-red-900/30 to-orange-900/30 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-red-500/30">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fas fa-exclamation-triangle text-red-400"></i>
+          <h3 class="font-bold text-white text-lg font-heading">Fix Merah - Login Not Available</h3>
+          <span class="bg-red-600/50 text-white text-xs px-2 py-0.5 rounded-full">New Account</span>
+        </div>
+        <div class="relative">
+          <textarea id="fixMerahText" rows="5" class="w-full p-3 bg-black/20 border border-white/30 rounded-lg text-sm text-white font-mono hidden-textarea" readonly></textarea>
+          <div class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20">
+            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button id="generateFixMerah" class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg"><i class="fas fa-sync-alt mr-1"></i> Generate</button>
+          <button id="salinFixMerah" class="bg-gray-600/70 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-copy mr-1"></i> Salin Teks</button>
+          <button id="kirimFixMerah" class="bg-blue-600/80 text-white px-4 py-2 rounded-lg text-sm"><i class="fab fa-google mr-1"></i> Kirim Gmail</button>
+        </div>
+        <p class="text-xs text-white/60 mt-2"><i class="far fa-envelope"></i> Tujuan: smb@support.whatsapp.com, support@support.whatsapp.com</p>
       </div>
 
       <!-- FITUR BAN -->
       <div id="fiturBan" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
-        <div class="flex items-center gap-2 mb-2"><i class="fas fa-ban text-red-300"></i><h3 class="font-bold text-white">Aju Banding Lepas Ban</h3><span class="bg-red-500/30 text-white text-xs px-2 py-0.5 rounded-full">Legit 100%</span></div>
-        <textarea id="banText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-ban text-red-300"></i><h3 class="font-bold text-white font-heading">Aju Banding Lepas Ban</h3><span class="bg-red-500/30 text-white text-xs px-2 py-0.5 rounded-full">Legit 100%</span></div>
+        <div class="relative">
+          <textarea id="banText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white hidden-textarea" readonly></textarea>
+          <div class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20">
+            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+          </div>
+        </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <button id="kocokBan" class="bg-indigo-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-random"></i> Kocok</button>
           <button id="salinBan" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
@@ -152,8 +192,13 @@
 
       <!-- FITUR LIMIT -->
       <div id="fiturLimit" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
-        <div class="flex items-center gap-2 mb-2"><i class="fas fa-tachometer-alt text-orange-300"></i><h3 class="font-bold text-white">Aju Banding Lepas Limit</h3></div>
-        <textarea id="limitText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white" readonly></textarea>
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-tachometer-alt text-orange-300"></i><h3 class="font-bold text-white font-heading">Aju Banding Lepas Limit</h3></div>
+        <div class="relative">
+          <textarea id="limitText" rows="4" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-sm text-white hidden-textarea" readonly></textarea>
+          <div class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-medium backdrop-blur-sm rounded-lg border border-white/20">
+            <i class="fas fa-lock mr-2"></i> Teks tersembunyi (Premium only)
+          </div>
+        </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <button id="kocokLimit" class="bg-indigo-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-random"></i> Kocok</button>
           <button id="salinLimit" class="bg-gray-500/50 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy"></i> Salin</button>
@@ -164,7 +209,7 @@
 
       <!-- BLAST -->
       <div id="fiturBlast" class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
-        <div class="flex items-center gap-2 mb-2"><i class="fas fa-broadcast-tower text-blue-300"></i><h3 class="font-bold text-white">Anti Limit Blast Web</h3></div>
+        <div class="flex items-center gap-2 mb-2"><i class="fas fa-broadcast-tower text-blue-300"></i><h3 class="font-bold text-white font-heading">Anti Limit Blast Web</h3></div>
         <div class="space-y-2">
           <input type="tel" id="blastPhoneInput" placeholder="Nomor Telepon Target" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60">
           <div class="flex gap-2 items-end">
@@ -174,7 +219,7 @@
         </div>
         <div id="blastProgressContainer" class="mt-3 hidden">
           <div class="h-2 bg-white/30 rounded-full"><div id="blastProgressBar" class="h-2 bg-blue-400 rounded-full" style="width:0%"></div></div>
-          <p id="blastProgressText" class="text-xs text-white/80 mt-1">0%</p>
+          <p id="blastProgressText" class="text-xs text-white/80 mt-1 font-mono">0%</p>
         </div>
         <p class="text-xs text-white/70 mt-2"><i class="fas fa-info-circle"></i> Maksimal blast: <span id="maxBlast">50</span></p>
       </div>
@@ -183,72 +228,59 @@
     <!-- AKTIVITAS -->
     <div id="page-aktivitas" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
-        <h3 class="font-bold text-white mb-3"><i class="fas fa-history mr-2"></i>Riwayat Banding</h3>
+        <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-history mr-2"></i>Riwayat Banding</h3>
         <div id="aktivitasList" class="text-white/80"></div>
       </div>
     </div>
 
     <!-- TUTORIAL -->
-<div id="page-tutorial" class="page-view">
-  <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow premium-lock relative border border-white/30">
-    <h3 class="font-bold text-white text-lg mb-3"><i class="fas fa-book-open mr-2"></i>Tutorial Aman Blast</h3>
-    <div class="space-y-3 text-sm text-white/90">
-      <p><strong>🔹 Cara Aman Blast:</strong> Gunakan proxy 1.1.1.1, tunggu 10 menit, blast tanpa matikan proxy.</p>
-      <p><strong>🔹 Pemanasan WhatsApp:</strong> Pakai proxy 5-12 jam, lalu 1 chat jeda 5 menit, 4 chat jeda, lanjutkan 499+ chat.</p>
-      <p><strong>🔹 Wajib Gabung Grup/Saluran:</strong> Minimal 2 grup WA & 2 saluran Telegram aktif.</p>
-      <p><strong>🔹 Pancing Nomor Sendiri:</strong> Chat biasa dengan nomor lain sebelum blast.</p>
-    </div>
-    
-    <!-- Fitur Baru: Web Blast Gampang Cair -->
-    <div class="mt-5 pt-4 border-t border-white/30">
-      <h4 class="font-semibold text-white text-md mb-2 flex items-center gap-2">
-        <i class="fas fa-globe text-cyan-300"></i> Web Blast Gampang Cair
-      </h4>
-      <p class="text-white/80 text-xs mb-2">Beberapa web blast populer yang sering digunakan admin, tapi susah diakalin pakai proxy biasa:</p>
-      <div class="grid grid-cols-2 gap-2 mb-3">
-        <a href="https://monsterwa1.com/" target="_blank" class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs hover:bg-white/20 transition flex items-center gap-1">
-          <i class="fas fa-link text-blue-300"></i> monsterwa1.com
-        </a>
-        <a href="https://monsterwaku.com/" target="_blank" class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs hover:bg-white/20 transition flex items-center gap-1">
-          <i class="fas fa-link text-blue-300"></i> monsterwaku.com
-        </a>
-        <a href="https://monsterwakita.com/" target="_blank" class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs hover:bg-white/20 transition flex items-center gap-1">
-          <i class="fas fa-link text-blue-300"></i> monsterwakita.com
-        </a>
-        <a href="https://wacuannq.com/" target="_blank" class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs hover:bg-white/20 transition flex items-center gap-1">
-          <i class="fas fa-link text-blue-300"></i> wacuannq.com
-        </a>
-      </div>
-      <p class="text-white/80 text-xs mb-2">
-        <span class="bg-purple-500/30 px-1.5 py-0.5 rounded text-white font-medium">Admin Sering Pakai:</span>
-      </p>
-      <a href="https://jalurolive.com/whatsapp" target="_blank" class="block bg-white/5 border border-purple-400/40 rounded-lg px-3 py-2 text-white text-xs hover:bg-purple-600/30 transition mb-3">
-        <i class="fas fa-star text-yellow-300 mr-1"></i> jalurolive.com/whatsapp
-      </a>
-      <div class="bg-black/20 rounded-lg p-3 border border-yellow-500/30">
-        <p class="text-white text-xs leading-relaxed">
-          <i class="fas fa-exclamation-triangle text-yellow-400 mr-1"></i>
-          <strong>Kelima web di atas susah diakalin pakai Proxy.</strong> Namun ada celah lain yang bisa dimanfaatkan. 
-          <span class="font-semibold text-yellow-300">Pantau terus grup Telegram kami</span> untuk update trik terbaru cara mengakali web blast tersebut.
-        </p>
-        <a href="https://t.me/ZhennBlast01" target="_blank" class="mt-3 flex items-center justify-center gap-2 bg-blue-500/60 hover:bg-blue-600/80 text-white py-2 px-3 rounded-lg text-sm transition">
-          <i class="fab fa-telegram text-xl"></i> Gabung Grup @ZhennBlast01
-        </a>
+    <div id="page-tutorial" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30 premium-lock relative">
+        <h3 class="font-bold text-white text-lg mb-3 font-heading"><i class="fas fa-book-open mr-2"></i>Tutorial Aman Blast</h3>
+        <div class="relative">
+          <div class="space-y-3 text-sm text-white/90" style="filter: blur(5px); pointer-events: none;">
+            <p><strong>🔹 Cara Aman Blast:</strong> Gunakan proxy 1.1.1.1, tunggu 10 menit, blast tanpa matikan proxy.</p>
+            <p><strong>🔹 Pemanasan WhatsApp:</strong> Pakai proxy 5-12 jam, lalu 1 chat jeda 5 menit, 4 chat jeda, lanjutkan 499+ chat.</p>
+            <p><strong>🔹 Wajib Gabung Grup/Saluran:</strong> Minimal 2 grup WA & 2 saluran Telegram aktif.</p>
+            <p><strong>🔹 Pancing Nomor Sendiri:</strong> Chat biasa dengan nomor lain sebelum blast.</p>
+            <div class="mt-5 pt-4 border-t border-white/30">
+              <h4 class="font-semibold text-white text-md mb-2 flex items-center gap-2 font-heading"><i class="fas fa-globe text-cyan-300"></i> Web Blast Gampang Cair</h4>
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <span class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs">monsterwa1.com</span>
+                <span class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs">monsterwaku.com</span>
+                <span class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs">monsterwakita.com</span>
+                <span class="bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white text-xs">wacuannq.com</span>
+              </div>
+              <p class="text-white/80 text-xs mb-2"><span class="bg-purple-500/30 px-1.5 py-0.5 rounded text-white font-medium">Admin Sering Pakai:</span></p>
+              <span class="block bg-white/5 border border-purple-400/40 rounded-lg px-3 py-2 text-white text-xs mb-3">jalurolive.com/whatsapp</span>
+              <div class="bg-black/20 rounded-lg p-3 border border-yellow-500/30">
+                <p class="text-white text-xs leading-relaxed"><i class="fas fa-exclamation-triangle text-yellow-400 mr-1"></i><strong>Kelima web di atas susah diakalin pakai Proxy.</strong> Namun ada celah lain yang bisa dimanfaatkan. <span class="font-semibold text-yellow-300">Pantau terus grup Telegram kami</span> untuk update trik terbaru.</p>
+                <span class="mt-3 flex items-center justify-center gap-2 bg-blue-500/60 text-white py-2 px-3 rounded-lg text-sm"><i class="fab fa-telegram text-xl"></i> Gabung Grup @ZhennBlast01</span>
+              </div>
+            </div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center backdrop-blur-sm rounded-lg border border-white/20">
+            <div class="text-center text-white">
+              <i class="fas fa-crown text-4xl text-yellow-400 mb-2"></i>
+              <p class="font-bold text-lg">Premium Only</p>
+              <p class="text-sm text-white/70 mb-3">Buka kunci tutorial dengan berlangganan Premium</p>
+              <button id="unlockTutorialBtn" class="bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold px-4 py-2 rounded-full text-sm">Beli Premium</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-    <!-- PROFIL -->
+    <!-- PROFIL & PAYMENT -->
     <div id="page-profil" class="page-view space-y-4">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
-        <h3 class="font-bold text-white mb-3">Informasi Akun</h3>
+        <h3 class="font-bold text-white mb-3 font-heading">Informasi Akun</h3>
         <p class="text-white/90">Nama: <span id="profName"></span></p>
         <p class="text-white/90">Email/HP: <span id="profEmail"></span></p>
         <p class="text-white/90">Status: <span id="profStatus"></span></p>
         <p class="text-white/90">Berakhir: <span id="profExpiry"></span></p>
         <hr class="my-3 border-white/30">
-        <h4 class="font-semibold text-white">Ganti Password</h4>
+        <h4 class="font-semibold text-white font-heading">Ganti Password</h4>
         <div class="space-y-2 mt-2">
           <input type="password" id="oldPassInput" placeholder="Password saat ini" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <input type="password" id="newPassInput" placeholder="Password baru" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white">
@@ -256,10 +288,99 @@
           <button id="forgotPassBtn" class="text-white/70 text-sm underline w-full text-center">Lupa Password?</button>
         </div>
         <hr class="my-3 border-white/30">
-        <h4 class="font-semibold text-white">Aktivasi Premium</h4>
+        <h4 class="font-semibold text-white font-heading">Aktivasi Premium (Kode)</h4>
         <div class="flex gap-2 mt-2">
           <input type="text" id="kodePremiumInput" placeholder="Kode premium" class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <button id="activatePremiumBtn" class="bg-green-600 text-white px-3 py-2 rounded-lg">Aktifkan</button>
+        </div>
+        
+        <!-- PAYMENT SECTION -->
+        <hr class="my-3 border-white/30">
+        <h4 class="font-semibold text-white font-heading mb-3"><i class="fas fa-shopping-cart mr-2"></i>Beli Premium</h4>
+        
+        <!-- Pilihan Paket -->
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="3" data-harga="20000" data-hari="3">
+            <p class="text-white font-bold">3 Hari</p>
+            <p class="text-yellow-300 text-sm">Rp 20.000</p>
+          </button>
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="7" data-harga="45000" data-hari="7">
+            <p class="text-white font-bold">7 Hari</p>
+            <p class="text-yellow-300 text-sm">Rp 45.000</p>
+            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded">+Free 2 Hari</span>
+          </button>
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="30" data-harga="100000" data-hari="30">
+            <p class="text-white font-bold">30 Hari</p>
+            <p class="text-yellow-300 text-sm">Rp 100.000</p>
+            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded">+Free 2 Hari</span>
+          </button>
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="unlimited" data-harga="150000" data-hari="unlimited">
+            <p class="text-white font-bold">Unlimited</p>
+            <p class="text-yellow-300 text-sm">Rp 150.000</p>
+            <span class="bg-purple-500/50 text-white text-xs px-1.5 py-0.5 rounded">Admin Panel</span>
+          </button>
+        </div>
+        
+        <!-- Tombol Order -->
+        <button id="orderNowBtn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">
+          <i class="fas fa-wallet mr-2"></i>Order Sekarang
+        </button>
+        
+        <!-- Modal Payment (Hidden by default) -->
+        <div id="paymentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('paymentModal').classList.add('hidden')"></div>
+          <div class="relative bg-gray-900/90 backdrop-blur-xl rounded-3xl p-6 w-full max-w-md border border-white/30 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold text-white mb-4 font-heading">Pilih Metode Pembayaran</h3>
+            <p class="text-white/80 text-sm mb-3">Paket: <span id="selectedPaket">-</span></p>
+            <p class="text-white/80 text-sm mb-4">Total: <span id="selectedHarga" class="text-yellow-300 font-bold">-</span></p>
+            
+            <!-- Metode Pembayaran -->
+            <div class="space-y-3">
+              <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Dana">
+                <div class="flex items-center gap-3">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Dana" class="w-8 h-8 rounded">
+                  <div><p class="text-white font-bold">Dana</p><p class="text-white/60 text-xs">085786073610</p></div>
+                </div>
+              </button>
+              <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="Gopay">
+                <div class="flex items-center gap-3">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="Gopay" class="w-8 h-8 rounded">
+                  <div><p class="text-white font-bold">Gopay</p><p class="text-white/60 text-xs">085786073610</p></div>
+                </div>
+              </button>
+              <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="ShopeePay">
+                <div class="flex items-center gap-3">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="ShopeePay" class="w-8 h-8 rounded bg-white p-1">
+                  <div><p class="text-white font-bold">ShopeePay</p><p class="text-white/60 text-xs">083823079884</p></div>
+                </div>
+              </button>
+              <button class="metode-btn w-full bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-metode="QRIS">
+                <div class="flex items-center gap-3">
+                  <i class="fas fa-qrcode text-2xl text-white"></i>
+                  <div><p class="text-white font-bold">QRIS</p><p class="text-white/60 text-xs">Scan QR di bawah</p></div>
+                </div>
+              </button>
+            </div>
+            
+            <!-- QRIS Image -->
+            <div id="qrisContainer" class="mt-4 hidden">
+              <p class="text-white/80 text-sm mb-2">Scan QRIS:</p>
+              <img src="1776742263251.jpg" alt="QRIS" class="w-full rounded-xl border border-white/30">
+            </div>
+            
+            <!-- Upload Bukti -->
+            <div class="mt-4">
+              <label class="block text-white/80 text-sm mb-2">Upload Bukti Transfer:</label>
+              <input type="file" id="buktiTransferInput" accept="image/*" class="w-full p-2 bg-white/10 border border-white/30 rounded-lg text-white file:bg-blue-600 file:text-white file:border-none file:px-4 file:py-2 file:rounded-lg">
+            </div>
+            
+            <p class="text-white/60 text-xs mt-3"><i class="fas fa-info-circle mr-1"></i>Sertakan bukti transfer yang jelas.</p>
+            
+            <button id="konfirmasiPaymentBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl mt-4">
+              <i class="fab fa-telegram mr-2"></i>Kirim ke Telegram
+            </button>
+            <button class="w-full mt-2 text-white/70 text-sm" onclick="document.getElementById('paymentModal').classList.add('hidden')">Batal</button>
+          </div>
         </div>
       </div>
     </div>
@@ -268,19 +389,19 @@
     <div id="page-kontak" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow border border-white/30 text-center">
         <i class="fab fa-telegram text-5xl text-blue-300 mb-4"></i>
-        <h3 class="font-bold text-white text-xl">Customer Service</h3>
+        <h3 class="font-bold text-white text-xl font-heading">Customer Service</h3>
         <div class="space-y-3 mt-4">
-          <a href="https://t.me/ZhennBlast" target="_blank" class="block bg-blue-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>Order@ZhennBlast</a>
-          <a href="https://t.me/KINKFLUXO" target="_blank" class="block bg-indigo-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>Cs@KINKFLUXO</a>
+          <a href="https://t.me/ZhennBlast" target="_blank" class="block bg-blue-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@ZhennBlast</a>
+          <a href="https://t.me/KINKFLUXO" target="_blank" class="block bg-indigo-600/70 text-white py-3 rounded-xl"><i class="fab fa-telegram mr-2"></i>@KINKFLUXO</a>
           <a href="https://t.me/ZhennBlast01" target="_blank" class="block border border-white/30 text-white py-3 rounded-xl"><i class="fas fa-users mr-2"></i>Grup ZhennBlast01</a>
         </div>
       </div>
     </div>
 
-    <!-- HALAMAN ADMIN KELOLA USER -->
+    <!-- ADMIN KELOLA USER -->
     <div id="page-adminUsers" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
-        <h3 class="font-bold text-white mb-3">Manajemen Pengguna</h3>
+        <h3 class="font-bold text-white mb-3 font-heading">Manajemen Pengguna</h3>
         <div class="flex gap-2 mb-3">
           <input type="text" id="adminSearchUser" placeholder="Cari..." class="flex-1 p-2 bg-white/10 border border-white/30 rounded-lg text-white">
           <button id="refreshAdminList" class="bg-blue-500/50 text-white px-3 py-2 rounded-lg"><i class="fas fa-sync-alt"></i></button>
