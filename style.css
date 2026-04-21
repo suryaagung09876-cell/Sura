@@ -31,3 +31,19 @@ body.dark .video-overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(5p
 
 .paket-btn.active { border-color: #10b981; background: rgba(16, 185, 129, 0.2); }
 .metode-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.2); }
+
+/* ... kode CSS sebelumnya tetap ... */
+
+/* Force Font Awesome Rendering - Tambahan */
+.fa, .fas, .far, .fab {
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  display: inline-block !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+.fab {
+  font-family: "Font Awesome 6 Brands" !important;
+  font-weight: 400 !important;
+}
