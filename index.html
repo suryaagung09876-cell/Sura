@@ -13,18 +13,27 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Font Awesome 6.5.2 (Stabil) dengan fallback -->
+  <!-- Font Awesome 6.5.2 - CDN Stabil -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <!-- Fallback jika CDN pertama gagal -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
   
+  <!-- Fallback & Force Icon Rendering -->
   <style>
+    /* Force Font Awesome Rendering */
+    .fa, .fas, .far, .fab {
+      font-family: "Font Awesome 6 Free" !important;
+      font-weight: 900 !important;
+      font-style: normal !important;
+      display: inline-block !important;
+      text-rendering: auto !important;
+      -webkit-font-smoothing: antialiased !important;
+    }
+    .fab {
+      font-family: "Font Awesome 6 Brands" !important;
+      font-weight: 400 !important;
+    }
+    /* Global Font */
     * { font-family: 'Inter', sans-serif !important; }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Poppins', sans-serif !important; }
-    /* Pastikan icon tidak terpotong */
-    i { font-style: normal; }
-    .fa, .fas, .far, .fab { font-family: "Font Awesome 6 Free"; }
-    .fab { font-family: "Font Awesome 6 Brands"; }
   </style>
 </head>
 <body class="text-gray-800">
