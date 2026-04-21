@@ -26,6 +26,5 @@ body.dark .video-overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(5p
 .paket-btn.active { border-color: #10b981; background: rgba(16, 185, 129, 0.3); }
 .metode-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.3); }
 
-/* Force Font Awesome */
 .fa, .fas, .far, .fab { font-family: "Font Awesome 6 Free" !important; font-weight: 900 !important; }
 .fab { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
