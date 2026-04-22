@@ -1,4 +1,4 @@
-// script.js - FULL VERSION WITH DRAKOR + ADMIN + BLAST 30 DETIK
+// script.js - FULL VERSION (1 BULAN & UNLIMITED ONLY + GHUSHOP)
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJGnr4C_tG6ItiLmITprjMUHA_7xP6rUE",
@@ -176,7 +176,7 @@ function updateUI() {
   let max = 50;
   if (premium && currentUser?.premiumExpiry) {
     const days = Math.ceil((new Date(currentUser.premiumExpiry) - new Date()) / (1000*60*60*24));
-    if (days <= 3) max = 100; else if (days <= 7) max = 500; else max = 1000;
+    if (days <= 30) max = 500; else max = 1000;
   }
   const maxEl = document.getElementById('maxBlast');
   if (maxEl) maxEl.textContent = max;
@@ -188,6 +188,8 @@ const menuItems = [
   { id: 'aktivitas', icon: 'fa-history', label: 'Aktivitas' },
   { id: 'tutorial', icon: 'fa-book-open', label: 'Tutorial' },
   { id: 'drakor', icon: 'fa-tv', label: 'Drakor' },
+  { id: 'ghushop', icon: 'fa-crown', label: 'App Prem Murah' },
+  { id: 'pencarian', icon: 'fa-search', label: 'Pencarian' },
   { id: 'akun', icon: 'fa-user', label: 'Akun' },
   { id: 'order', icon: 'fa-shopping-cart', label: 'Order' },
   { id: 'kontak', icon: 'fab fa-telegram', label: 'Kontak' }
@@ -202,7 +204,7 @@ function renderDrawerMenu(filter='') {
 
 function navigateTo(page) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${page}`).classList.add('active');
+  document.getElementById(`page-${page}`)?.classList.add('active');
   document.querySelectorAll('.bottom-nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.page === page);
     b.classList.toggle('text-white', b.dataset.page === page);
@@ -278,19 +280,28 @@ document.getElementById('changePassBtn')?.addEventListener('click', async () => 
 });
 document.getElementById('forgotPassBtn')?.addEventListener('click', () => alert('Hubungi @ZhennBlast'));
 
-// Aktivasi Premium
+// Aktivasi Premium (HANYA 1 BULAN & UNLIMITED)
 document.getElementById('activatePremiumBtn')?.addEventListener('click', async () => {
   const code = document.getElementById('kodePremiumInput').value.toUpperCase();
   let days = 0;
-  if (code === 'PREMIUM0102831') days = 3;
-  else if (code === 'PREMIUM02738271') days = 7;
-  else if (code === 'PREMIUM637182618') days = 30;
-  else return alert('Kode tidak valid');
-  const exp = new Date(); exp.setDate(exp.getDate() + days);
+  let isUnlimited = false;
+  
+  if (code === 'PREMIUM637182618') days = 30;
+  else if (code === 'PREMIUMUNLIMITED') isUnlimited = true;
+  else return alert('❌ Kode tidak valid');
+  
+  const exp = new Date();
+  if (isUnlimited) {
+    exp.setFullYear(exp.getFullYear() + 100);
+  } else {
+    exp.setDate(exp.getDate() + days);
+  }
+  
   await update(ref(db, 'users/' + currentUser.id), { premiumExpiry: exp.toISOString() });
   currentUser.premiumExpiry = exp.toISOString();
   updateUI();
-  alert(`Premium aktif hingga ${exp.toLocaleDateString()}`);
+  alert(`✅ Premium aktif hingga ${isUnlimited ? 'Unlimited' : exp.toLocaleDateString()}`);
+  document.getElementById('kodePremiumInput').value = '';
   navigateTo('beranda');
 });
 
@@ -302,7 +313,7 @@ document.querySelectorAll('.paket-btn').forEach(b => b.addEventListener('click',
 }));
 document.getElementById('orderNowBtn')?.addEventListener('click', () => {
   if (!selectedPaket.hari) return alert('Pilih paket!');
-  document.getElementById('selectedPaket').textContent = `${selectedPaket.hari} Hari`;
+  document.getElementById('selectedPaket').textContent = selectedPaket.hari === 'unlimited' ? 'Unlimited' : `${selectedPaket.hari} Hari`;
   document.getElementById('selectedHarga').textContent = `Rp ${parseInt(selectedPaket.harga).toLocaleString()}`;
   document.getElementById('paymentModal').classList.remove('hidden');
 });
@@ -315,7 +326,8 @@ document.querySelectorAll('.metode-btn').forEach(b => b.addEventListener('click'
 document.getElementById('buktiTransferInput')?.addEventListener('change', e => buktiTransferFile = e.target.files[0]);
 document.getElementById('konfirmasiPaymentBtn')?.addEventListener('click', () => {
   if (!selectedMetode) return alert('Pilih metode!');
-  window.open(`https://t.me/ZhennBlast?text=Saya sudah bayar ${selectedPaket.hari} Hari via ${selectedMetode}`, '_blank');
+  const paketText = selectedPaket.hari === 'unlimited' ? 'Unlimited' : `${selectedPaket.hari} Hari`;
+  window.open(`https://t.me/ZhennBlast?text=Saya sudah bayar ${paketText} via ${selectedMetode} sebesar Rp ${parseInt(selectedPaket.harga).toLocaleString()}`, '_blank');
   document.getElementById('paymentModal').classList.add('hidden');
   alert('Kirim bukti di chat Telegram');
 });
@@ -323,7 +335,15 @@ document.getElementById('konfirmasiPaymentBtn')?.addEventListener('click', () =>
 // Admin Functions
 document.getElementById('adminManageUsers')?.addEventListener('click', () => navigateTo('adminUsers'));
 async function addPremiumDays(userId, days) {
-  await update(ref(db, 'users/' + userId), { premiumExpiry: new Date(Date.now() + days*86400000).toISOString() });
+  const exp = new Date();
+  exp.setDate(exp.getDate() + days);
+  await update(ref(db, 'users/' + userId), { premiumExpiry: exp.toISOString() });
+  renderAdminUserList();
+}
+async function addUnlimited(userId) {
+  const exp = new Date();
+  exp.setFullYear(exp.getFullYear() + 100);
+  await update(ref(db, 'users/' + userId), { premiumExpiry: exp.toISOString() });
   renderAdminUserList();
 }
 async function deleteUser(userId) { if (confirm('Yakin?')) { await remove(ref(db, 'users/' + userId)); renderAdminUserList(); } }
@@ -332,11 +352,15 @@ async function generateCode(userId) {
   if (snap.exists()) {
     const user = snap.val();
     const codes = user.activationCodes || [];
-    const prefix = 'PREMIUM' + ['3','7','30'][Math.floor(Math.random()*3)];
-    const newCode = prefix + Math.random().toString(36).substring(2,8).toUpperCase();
-    codes.push(newCode);
-    await update(ref(db, 'users/' + userId), { activationCodes: codes });
-    alert(`Kode: ${newCode}`);
+    const type = Math.random() > 0.5 ? '30' : 'UNLIMITED';
+    const newCode = type === '30' ? 'PREMIUM637182618' : 'PREMIUMUNLIMITED';
+    if (!codes.includes(newCode)) {
+      codes.push(newCode);
+      await update(ref(db, 'users/' + userId), { activationCodes: codes });
+      alert(`🎁 Kode untuk ${user.name}: ${newCode}\n(${type === '30' ? '1 Bulan' : 'Unlimited'})`);
+    } else {
+      alert('User sudah memiliki kode ini');
+    }
     renderAdminUserList();
   }
 }
@@ -345,8 +369,12 @@ async function renderAdminUserList() {
   if (!list) return;
   const search = document.getElementById('adminSearchUser')?.value.toLowerCase() || '';
   const filtered = users.filter(u => u.identifier && (u.identifier.toLowerCase().includes(search) || (u.name||'').toLowerCase().includes(search)));
-  list.innerHTML = filtered.map(u => `<div class="border border-white/30 p-3 rounded-lg"><p class="text-white">${u.name} (${u.identifier})</p><p class="text-white/70 text-xs">Premium: ${u.premiumExpiry?new Date(u.premiumExpiry).toLocaleDateString():'Tidak'}</p><div class="flex gap-2 mt-2"><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="3">+3</button><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="7">+7</button><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="30">+30</button><button data-id="${u.id}" class="gen-code bg-green-500/50 text-white px-2 py-1 rounded text-xs">Kode</button><button data-id="${u.id}" class="delete-user bg-red-500/50 text-white px-2 py-1 rounded text-xs">Hapus</button></div></div>`).join('');
-  document.querySelectorAll('.set-days').forEach(b => b.addEventListener('click', () => addPremiumDays(b.dataset.id, parseInt(b.dataset.days))));
+  list.innerHTML = filtered.map(u => {
+    const exp = u.premiumExpiry ? new Date(u.premiumExpiry).toLocaleDateString() : 'Tidak';
+    return `<div class="border border-white/30 p-3 rounded-lg"><p class="text-white">${u.name} (${u.identifier})</p><p class="text-white/70 text-xs">Premium: ${exp}</p><div class="flex gap-2 mt-2"><button data-id="${u.id}" class="set-days bg-blue-500/50 text-white px-2 py-1 rounded text-xs" data-days="30">+1 Bulan</button><button data-id="${u.id}" class="set-unlimited bg-purple-500/50 text-white px-2 py-1 rounded text-xs">Unlimited</button><button data-id="${u.id}" class="gen-code bg-green-500/50 text-white px-2 py-1 rounded text-xs">Kode</button><button data-id="${u.id}" class="delete-user bg-red-500/50 text-white px-2 py-1 rounded text-xs">Hapus</button></div></div>`;
+  }).join('');
+  document.querySelectorAll('.set-days').forEach(b => b.addEventListener('click', () => addPremiumDays(b.dataset.id, 30)));
+  document.querySelectorAll('.set-unlimited').forEach(b => b.addEventListener('click', () => addUnlimited(b.dataset.id)));
   document.querySelectorAll('.gen-code').forEach(b => b.addEventListener('click', () => generateCode(b.dataset.id)));
   document.querySelectorAll('.delete-user').forEach(b => b.addEventListener('click', () => deleteUser(b.dataset.id)));
 }
