@@ -305,30 +305,31 @@
       </div>
     </div>
 
-    <!-- ORDER -->
+    <!-- ORDER - HANYA 1 BULAN & UNLIMITED -->
     <div id="page-order" class="page-view space-y-4">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
         <h3 class="font-bold text-white mb-3 font-heading"><i class="fas fa-shopping-cart mr-2"></i>Beli Premium</h3>
         
-        <div class="grid grid-cols-2 gap-2 mb-3">
-          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="3" data-harga="20000" data-hari="3">
-            <p class="text-white font-bold"><i class="fas fa-calendar-day mr-1"></i>3 Hari</p>
-            <p class="text-yellow-300 text-sm">Rp 20.000</p>
+        <div class="grid grid-cols-1 gap-3 mb-4">
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-durasi="30" data-harga="25000" data-hari="30">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-white font-bold text-lg"><i class="fas fa-calendar-alt mr-2"></i>1 Bulan</p>
+                <p class="text-white/70 text-sm">Akses penuh selama 30 hari</p>
+              </div>
+              <p class="text-yellow-300 font-bold text-xl">Rp 25.000</p>
+            </div>
           </button>
-          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="7" data-harga="45000" data-hari="7">
-            <p class="text-white font-bold"><i class="fas fa-calendar-week mr-1"></i>7 Hari</p>
-            <p class="text-yellow-300 text-sm">Rp 45.000</p>
-            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-gift mr-1"></i>+Free 2 Hari</span>
-          </button>
-          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="30" data-harga="100000" data-hari="30">
-            <p class="text-white font-bold"><i class="fas fa-calendar-alt mr-1"></i>30 Hari</p>
-            <p class="text-yellow-300 text-sm">Rp 100.000</p>
-            <span class="bg-green-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-gift mr-1"></i>+Free 2 Hari</span>
-          </button>
-          <button class="paket-btn bg-white/10 border border-white/30 rounded-lg p-3 text-left hover:bg-white/20 transition" data-durasi="unlimited" data-harga="150000" data-hari="unlimited">
-            <p class="text-white font-bold"><i class="fas fa-infinity mr-1"></i>Unlimited</p>
-            <p class="text-yellow-300 text-sm">Rp 150.000</p>
-            <span class="bg-purple-500/50 text-white text-xs px-1.5 py-0.5 rounded"><i class="fas fa-crown mr-1"></i>Admin Panel</span>
+          
+          <button class="paket-btn bg-white/10 border border-white/30 rounded-xl p-4 text-left hover:bg-white/20 transition" data-durasi="unlimited" data-harga="50000" data-hari="unlimited">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-white font-bold text-lg"><i class="fas fa-infinity mr-2"></i>Unlimited</p>
+                <p class="text-white/70 text-sm">Akses selamanya + Admin Panel</p>
+              </div>
+              <p class="text-yellow-300 font-bold text-xl">Rp 50.000</p>
+            </div>
+            <span class="bg-purple-500/50 text-white text-xs px-2 py-0.5 rounded-full mt-2 inline-block"><i class="fas fa-crown mr-1"></i>Best Value</span>
           </button>
         </div>
         
@@ -393,13 +394,13 @@
       </div>
     </div>
 
-    <!-- NONTON DRAKOR (FITUR BARU) -->
+    <!-- NONTON DRAKOR -->
     <div id="page-drakor" class="page-view">
       <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30 relative">
         <h3 class="font-bold text-white text-lg mb-3 font-heading"><i class="fas fa-play-circle mr-2 text-red-400"></i>Nonton Drakor</h3>
         <div id="drakorLock" class="relative">
           <div class="w-full h-[500px] rounded-xl overflow-hidden border border-white/30">
-            <iframe id="drakorIframe" src="https://drakor.kita.mobi/" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+            <iframe id="drakorIframe" src="https://drakorkita.id/" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
           </div>
           <div id="drakorOverlay" class="absolute inset-0 flex items-center justify-center backdrop-blur-sm rounded-lg border border-white/20 hidden">
             <div class="text-center text-white">
@@ -411,6 +412,28 @@
           </div>
         </div>
         <p class="text-white/60 text-xs mt-2"><i class="fas fa-info-circle"></i> Streaming drakor terbaru sub Indo.</p>
+      </div>
+    </div>
+
+    <!-- PENCARIAN GOOGLE -->
+    <div id="page-pencarian" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white text-lg mb-3 font-heading"><i class="fas fa-search mr-2 text-blue-300"></i>Pencarian Google</h3>
+        <div class="w-full h-[500px] rounded-xl overflow-hidden border border-white/30">
+          <iframe src="https://www.google.com/search?igu=1" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <p class="text-white/60 text-xs mt-2"><i class="fas fa-info-circle"></i> Cari apa saja langsung dari Google.</p>
+      </div>
+    </div>
+
+    <!-- APP PREM MURAH (GHUSHOP) - FITUR BARU -->
+    <div id="page-ghushop" class="page-view">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow border border-white/30">
+        <h3 class="font-bold text-white text-lg mb-3 font-heading"><i class="fas fa-crown mr-2 text-yellow-400"></i>App Prem Murah - GHUShop</h3>
+        <div class="w-full h-[500px] rounded-xl overflow-hidden border border-white/30">
+          <iframe src="https://ghushop.com/" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <p class="text-white/60 text-xs mt-2"><i class="fas fa-info-circle"></i> Top up game, e-wallet, pulsa, kuota, dan aplikasi premium murah.</p>
       </div>
     </div>
 
@@ -427,12 +450,14 @@
     </div>
   </main>
 
-  <!-- BOTTOM TOOLBAR (7 MENU) -->
+  <!-- BOTTOM TOOLBAR -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/30 flex justify-around py-2 text-xs z-20">
     <button data-page="beranda" class="bottom-nav-item flex flex-col items-center text-white"><i class="fas fa-home text-lg"></i><span>Beranda</span></button>
     <button data-page="aktivitas" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-history text-lg"></i><span>Aktivitas</span></button>
     <button data-page="tutorial" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-book-open text-lg"></i><span>Tutorial</span></button>
     <button data-page="drakor" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-tv text-lg"></i><span>Drakor</span></button>
+    <button data-page="ghushop" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-crown text-lg"></i><span>App Prem</span></button>
+    <button data-page="pencarian" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-search text-lg"></i><span>Cari</span></button>
     <button data-page="akun" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-user text-lg"></i><span>Akun</span></button>
     <button data-page="order" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fas fa-shopping-cart text-lg"></i><span>Order</span></button>
     <button data-page="kontak" class="bottom-nav-item flex flex-col items-center text-white/70"><i class="fab fa-telegram text-lg"></i><span>Kontak</span></button>
