@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 console.log("✅ Firebase connected");
 
-const ADMIN_CODE = 'Admin131313';
+const ADMIN_CODE = 'Admin09876';
 let currentUser = null;
 let isAdminMode = false;
 let users = [];
